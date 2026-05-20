@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="SoloCreate のポートフォリオ。制作アプリ、ブラウザゲーム、お知らせを公開しています。"
+    />
+    <title>SoloCreate Portfolio</title>
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="SoloCreate Portfolio">
+        <span class="brand-mark">SC</span>
+        <span>SoloCreate</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#apps">Apps</a>
+        <a href="#games">Games</a>
+        <a href="#news">News</a>
+        <a href="#about">About</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Portfolio / Apps / Browser Games</p>
+          <h1 id="hero-title">SoloCreate の制作物を育てていく場所</h1>
+          <p class="hero-lead">
+            アプリの紹介、ブラウザで遊べる小さなゲーム、開発のお知らせをまとめて公開するポートフォリオサイトです。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#apps">制作アプリを見る</a>
+            <a class="button ghost" href="#news">更新情報を見る</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="Site highlights">
+          <div class="metric">
+            <span id="app-count">0</span>
+            <p>Apps</p>
+          </div>
+          <div class="metric">
+            <span id="game-count">0</span>
+            <p>Games</p>
+          </div>
+          <div class="metric">
+            <span id="news-count">0</span>
+            <p>Updates</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="apps" aria-labelledby="apps-title">
+        <div class="section-heading">
+          <p class="eyebrow">Applications</p>
+          <h2 id="apps-title">アプリ紹介</h2>
+          <p>公開中、開発中、構想中のアプリをここに追加していきます。</p>
+        </div>
+        <div class="card-grid" id="apps-list"></div>
+      </section>
+
+      <section class="section band" id="games" aria-labelledby="games-title">
+        <div class="section-heading">
+          <p class="eyebrow">Browser Games</p>
+          <h2 id="games-title">ブラウザゲーム</h2>
+          <p>HTML、CSS、JavaScript で作ったゲームを直接遊べる形で置けます。</p>
+        </div>
+        <div class="card-grid" id="games-list"></div>
+      </section>
+
+      <section class="section" id="news" aria-labelledby="news-title">
+        <div class="section-heading">
+          <p class="eyebrow">News</p>
+          <h2 id="news-title">お知らせ</h2>
+          <p>サイト更新やリリース情報を時系列で残していきます。</p>
+        </div>
+        <div class="timeline" id="news-list"></div>
+      </section>
+
+      <section class="section about" id="about" aria-labelledby="about-title">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2 id="about-title">これからの更新方針</h2>
+        </div>
+        <div class="about-copy">
+          <p>
+            まずは静的サイトとして GitHub Pages に公開し、アプリやゲームが増えたらカードを追加していく形で運用します。
+            ブログ記事が増えてきた段階で、Markdown 管理や Astro への移行もできます。
+          </p>
+          <ul class="check-list">
+            <li>アプリ紹介は `assets/js/content.js` に追加</li>
+            <li>ゲームは `games/` フォルダに追加</li>
+            <li>お知らせは日付つきで更新履歴として追加</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; <span id="year"></span> SoloCreate. Built for GitHub Pages.</p>
+      <a href="https://github.com/SoloCreate1110/SoloCreate-portfolio-site">GitHub</a>
+    </footer>
+
+    <script src="assets/js/content.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
