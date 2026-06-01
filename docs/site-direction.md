@@ -80,3 +80,4 @@ https://solocreate1110.github.io/SoloCreate-portfolio-site/
 ## 保留フォルダ
 
 `portfolio-site/portfolio-site/` は、将来 Next.js に移行する場合の参考として残します。ただし、現在の公開サイトでは使いません。
+
