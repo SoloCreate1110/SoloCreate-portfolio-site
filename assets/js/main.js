@@ -39,6 +39,35 @@ const renderCards = (items, targetId) => {
     .join("");
 };
 
+const renderAppCards = (items) => {
+  const target = document.getElementById("apps-list");
+  target.innerHTML = items
+    .map((item) => {
+      const cardContent = `
+        <div class="card-visual ${item.theme || ""}">
+          <span class="visual-label">${item.status}</span>
+        </div>
+        <div class="card-body">
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+          ${createTagList(item.tags)}
+          <span class="card-cta">${item.url ? "紹介を見る" : "準備中"}</span>
+        </div>
+      `;
+
+      if (!item.url) {
+        return `<article class="card app-card is-disabled">${cardContent}</article>`;
+      }
+
+      return `
+        <a class="card app-card" href="${item.url}" aria-label="${item.title}の紹介ページを見る">
+          ${cardContent}
+        </a>
+      `;
+    })
+    .join("");
+};
+
 const renderNews = () => {
   const target = document.getElementById("news-list");
   target.innerHTML = content.news
@@ -56,11 +85,28 @@ const renderNews = () => {
     .join("");
 };
 
-renderCards(content.apps, "apps-list");
+const renderBlog = () => {
+  const target = document.getElementById("blog-list");
+  target.innerHTML = content.blog
+    .map(
+      (item) => `
+        <article class="blog-card">
+          <time datetime="${item.date}">${item.date}</time>
+          <h3>${item.title}</h3>
+          <p>${item.excerpt}</p>
+          ${createTagList(item.tags)}
+        </article>
+      `,
+    )
+    .join("");
+};
+
+renderAppCards(content.apps);
 renderCards(content.games, "games-list");
 renderNews();
+renderBlog();
 
-document.getElementById("app-count").textContent = content.apps.length;
 document.getElementById("game-count").textContent = content.games.length;
 document.getElementById("news-count").textContent = content.news.length;
+document.getElementById("blog-count").textContent = content.blog.length;
 document.getElementById("year").textContent = new Date().getFullYear();

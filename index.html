@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="SoloCreate のポートフォリオ。制作アプリ、ブラウザゲーム、お知らせを公開しています。"
+      content="SoloCreate のポートフォリオ。ブラウザゲーム、制作アプリ、開発ログ、アップデート情報を公開しています。"
     />
-    <title>SoloCreate Portfolio</title>
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <title>SoloCreate | Games and Portfolio</title>
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260601" />
   </head>
   <body>
     <header class="site-header">
@@ -17,9 +17,10 @@
         <span>SoloCreate</span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="#apps">Apps</a>
         <a href="#games">Games</a>
-        <a href="#news">News</a>
+        <a href="#updates">Updates</a>
+        <a href="#blog">Blog</a>
+        <a href="#apps">Apps</a>
         <a href="#about">About</a>
       </nav>
     </header>
@@ -27,57 +28,81 @@
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">Portfolio / Apps / Browser Games</p>
-          <h1 id="hero-title">SoloCreate の制作物を育てていく場所</h1>
+          <p class="eyebrow">SoloCreate Games and Portfolio</p>
+          <h1 id="hero-title">作ったゲームを、すぐ遊べる形で公開していく場所</h1>
           <p class="hero-lead">
-            アプリの紹介、ブラウザで遊べる小さなゲーム、開発のお知らせをまとめて公開するポートフォリオサイトです。
+            ブラウザゲーム、制作アプリ、アップデート情報、自分だけの開発ブログをまとめて育てていくポートフォリオサイトです。
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#apps">制作アプリを見る</a>
-            <a class="button ghost" href="#news">更新情報を見る</a>
+            <a class="button primary" href="#games">ゲームで遊ぶ</a>
+            <a class="button ghost" href="#updates">更新を見る</a>
           </div>
         </div>
-        <div class="hero-panel" aria-label="Site highlights">
-          <div class="metric">
-            <span id="app-count">0</span>
-            <p>Apps</p>
+        <div class="hero-showcase" aria-label="Featured site content">
+          <div class="showcase-window">
+            <div class="showcase-bar">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="showcase-screen">
+              <p class="showcase-kicker">Now playable</p>
+              <h2>Click Sprint</h2>
+              <p>10秒でどれだけクリックできるかを試すミニゲーム。</p>
+              <a class="button small" href="games/click-sprint/">Play</a>
+            </div>
           </div>
-          <div class="metric">
-            <span id="game-count">0</span>
-            <p>Games</p>
-          </div>
-          <div class="metric">
-            <span id="news-count">0</span>
-            <p>Updates</p>
+          <div class="hero-stats">
+            <div class="metric">
+              <span id="game-count">0</span>
+              <p>Games</p>
+            </div>
+            <div class="metric">
+              <span id="news-count">0</span>
+              <p>Updates</p>
+            </div>
+            <div class="metric">
+              <span id="blog-count">0</span>
+              <p>Blog</p>
+            </div>
           </div>
         </div>
+      </section>
+
+      <section class="section band game-section" id="games" aria-labelledby="games-title">
+        <div class="section-heading">
+          <p class="eyebrow">Browser Games</p>
+          <h2 id="games-title">みんなに遊んでもらうゲーム</h2>
+          <p>完成したものから順番に、ブラウザで直接遊べる形で公開します。</p>
+        </div>
+        <div class="card-grid featured-grid" id="games-list"></div>
+      </section>
+
+      <section class="section" id="updates" aria-labelledby="updates-title">
+        <div class="section-heading">
+          <p class="eyebrow">Updates</p>
+          <h2 id="updates-title">アップデート情報</h2>
+          <p>サイト更新、ゲーム追加、改善したことを時系列で残していきます。</p>
+        </div>
+        <div class="timeline" id="news-list"></div>
+      </section>
+
+      <section class="section blog-section" id="blog" aria-labelledby="blog-title">
+        <div class="section-heading">
+          <p class="eyebrow">Blog</p>
+          <h2 id="blog-title">SoloCreate Log</h2>
+          <p>作っている途中の考え、つまずいたこと、次に試したいことを自分の言葉で残す場所です。</p>
+        </div>
+        <div class="blog-list" id="blog-list"></div>
       </section>
 
       <section class="section" id="apps" aria-labelledby="apps-title">
         <div class="section-heading">
           <p class="eyebrow">Applications</p>
-          <h2 id="apps-title">アプリ紹介</h2>
-          <p>公開中、開発中、構想中のアプリをここに追加していきます。</p>
+          <h2 id="apps-title">アプリと制作物</h2>
+          <p>公開中、開発中、構想中のアプリやツールをここに追加していきます。</p>
         </div>
-        <div class="card-grid" id="apps-list"></div>
-      </section>
-
-      <section class="section band" id="games" aria-labelledby="games-title">
-        <div class="section-heading">
-          <p class="eyebrow">Browser Games</p>
-          <h2 id="games-title">ブラウザゲーム</h2>
-          <p>HTML、CSS、JavaScript で作ったゲームを直接遊べる形で置けます。</p>
-        </div>
-        <div class="card-grid" id="games-list"></div>
-      </section>
-
-      <section class="section" id="news" aria-labelledby="news-title">
-        <div class="section-heading">
-          <p class="eyebrow">News</p>
-          <h2 id="news-title">お知らせ</h2>
-          <p>サイト更新やリリース情報を時系列で残していきます。</p>
-        </div>
-        <div class="timeline" id="news-list"></div>
+        <div class="card-grid compact-grid" id="apps-list"></div>
       </section>
 
       <section class="section about" id="about" aria-labelledby="about-title">
@@ -104,7 +129,7 @@
       <a href="https://github.com/SoloCreate1110/SoloCreate-portfolio-site">GitHub</a>
     </footer>
 
-    <script src="assets/js/content.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/content.js?v=20260601"></script>
+    <script src="assets/js/main.js?v=20260601"></script>
   </body>
 </html>
