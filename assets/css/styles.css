@@ -684,6 +684,16 @@ h3 {
   border-bottom:1px solid var(--line);
 }
 
+.journal-date {
+  display:block;
+  margin-bottom:10px;
+  color:#747c81;
+  font-size:.75rem;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.1em;
+}
+
 .journal-entry:last-child .journal-content {
   border-bottom:0;
 }
