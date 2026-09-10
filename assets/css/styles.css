@@ -563,6 +563,80 @@ h3 {
   color:var(--muted);
 }
 
+.journal-timeline {
+  position:relative;
+  max-width:900px;
+  padding-left:0;
+}
+
+.journal-timeline::before {
+  position:absolute;
+  top:48px;
+  bottom:72px;
+  left:22px;
+  width:1px;
+  background:#cbd1d5;
+  content:"";
+}
+
+.journal-timeline .journal-entry {
+  position:relative;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr);
+  gap:34px;
+  padding:0 0 54px;
+  border:0;
+}
+
+.journal-timeline .journal-entry:last-child {
+  padding-bottom:0;
+}
+
+.journal-marker {
+  position:relative;
+  z-index:1;
+  display:grid;
+  width:46px;
+  height:46px;
+  place-content:center;
+  border:1px solid var(--ink);
+  border-radius:50%;
+  background:var(--ink);
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.06em;
+}
+
+.journal-content {
+  padding:2px 0 52px;
+  border-bottom:1px solid var(--line);
+}
+
+.journal-entry:last-child .journal-content {
+  border-bottom:0;
+}
+
+.journal-content time {
+  display:block;
+  margin-bottom:12px;
+  color:#70787e;
+  font-size:.82rem;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+
+.journal-content h2 {
+  margin-bottom:12px;
+  font-size:clamp(1.35rem,2.6vw,2rem);
+}
+
+.journal-content p {
+  max-width:680px;
+  margin:0;
+  color:var(--muted);
+}
+
 .profile-hero {
   grid-template-columns:1fr minmax(260px,360px);
   align-items:center;
@@ -1071,3 +1145,5 @@ h3 {
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 
 .game-status{margin:16px 0 0;color:var(--muted);font-size:.875rem}.click-target{touch-action:manipulation;transition:background .15s,transform .1s}.click-target:not(:disabled):active{transform:scale(.985);background:#b9e33c}.score-box{min-width:0;text-align:center;font-size:.875rem}.score-box span{font-variant-numeric:tabular-nums}.game-shell{max-width:1100px;margin:auto}
+
+@media(max-width:700px){.journal-timeline::before{left:17px}.journal-timeline .journal-entry{grid-template-columns:36px minmax(0,1fr);gap:20px;padding-bottom:42px}.journal-marker{width:36px;height:36px;font-size:.65rem}.journal-content{padding-top:0;padding-bottom:40px}.journal-content time{margin-bottom:8px}.journal-content h2{font-size:1.3rem}}
