@@ -158,7 +158,9 @@ h3 {
 }
 
 .hero {
-  padding:40px 0 0;
+  width:100%;
+  max-width:none;
+  padding:0;
 }
 
 .hero-banner {
@@ -168,7 +170,7 @@ h3 {
   align-items:center;
   overflow:hidden;
   padding:clamp(36px,7vw,80px);
-  border-radius:22px;
+  border-radius:0;
   background:
     linear-gradient(90deg,#f8f4ebf7 0%,#f8f4ebd4 37%,#f8f4eb24 68%),
     url("../images/hero-creative.jpg") center right / cover no-repeat;
@@ -1380,3 +1382,5 @@ h3 {
 @media(max-width:700px){.update-month{grid-template-columns:1fr;gap:24px;padding-bottom:58px}.month-heading time{position:static;font-size:2.8rem}.month-heading time span{margin-bottom:8px}.month-entries::before{top:42px;bottom:24px;left:20px}.journal-timeline .journal-entry{grid-template-columns:42px minmax(0,1fr);gap:20px;padding-bottom:42px}.journal-marker{width:42px;height:42px;font-size:.78rem}.journal-content{padding-top:2px;padding-bottom:40px}.journal-content h2{font-size:1.3rem}}
 
 @media(max-width:700px){.article-shell{width:calc(100% - 40px)}.article-hero{padding:48px 0 36px}.article-content{padding:38px 0 60px}.article-footer-nav{flex-direction:column}}
+
+@media(max-width:700px){.hero{width:100%;padding-top:0}}
