@@ -45,6 +45,7 @@ window.siteContent = {
       excerpt:
         "毎日の勉強や運動、読書、作業時間を記録して、努力を見える化するアプリを紹介します。",
       tags: ["Android", "アプリ制作"],
+      url: "blog/tsumiage-release/",
     },
     {
       date: "2026-05-30",
@@ -52,6 +53,7 @@ window.siteContent = {
       excerpt:
         "アプリやゲーム、変更したことを一か所にまとめるため、SoloCreateのポートフォリオサイトを作りました。",
       tags: ["Web制作", "GitHub Pages"],
+      url: "blog/portfolio-launch/",
     },
   ],
 };

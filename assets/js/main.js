@@ -103,12 +103,15 @@ const renderBlog = () => {
   target.innerHTML = content.blog
     .map(
       (item) => `
-        <article class="blog-card">
-          <time datetime="${item.date}">${item.date}</time>
-          <h3>${item.title}</h3>
-          <p>${item.excerpt}</p>
-          ${createTagList(item.tags)}
-        </article>
+        <a class="blog-card" href="${item.url}" aria-label="${item.title}を読む">
+          <article>
+            <time datetime="${item.date}">${item.date}</time>
+            <h3>${item.title}</h3>
+            <p>${item.excerpt}</p>
+            ${createTagList(item.tags)}
+            <span class="blog-card-cta">記事を読む <span aria-hidden="true">→</span></span>
+          </article>
+        </a>
       `,
     )
     .join("");
