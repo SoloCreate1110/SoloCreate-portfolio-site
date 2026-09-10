@@ -120,9 +120,10 @@ h3 {
   place-content:center;
   width:40px;
   height:40px;
+  overflow:hidden;
   border-radius:12px;
-  background:var(--ink);
-  color:white;
+  background:#f8f4eb url("../images/solocreate-icon.png") center / cover no-repeat;
+  color:transparent;
   font-size:.85rem;
   display:flex;
   align-items:center;
@@ -130,7 +131,7 @@ h3 {
 }
 
 .brand-mark span {
-  color:var(--accent);
+  color:transparent;
 }
 
 .site-nav {
@@ -757,16 +758,17 @@ h3 {
   display:grid;
   aspect-ratio:1;
   place-content:center;
+  overflow:hidden;
   border-radius:24px;
-  background:var(--ink);
-  color:white;
+  background:#f8f4eb url("../images/solocreate-icon.png") center / cover no-repeat;
+  color:transparent;
   font-size:clamp(3rem,8vw,6rem);
   font-weight:900;
   letter-spacing:-.08em;
 }
 
 .profile-mark span {
-  color:var(--accent);
+  color:transparent;
 }
 
 .profile-links {
