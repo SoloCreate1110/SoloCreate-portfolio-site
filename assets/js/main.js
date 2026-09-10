@@ -20,12 +20,24 @@ const createLinks = (links) => {
 
 const renderCards = (items, targetId) => {
   const target = document.getElementById(targetId);
+  if (!items.length) {
+    target.innerHTML = `
+      <article class="games-coming-soon">
+        <p class="eyebrow">Coming soon</p>
+        <h3>次のひと遊びを、お楽しみに。</h3>
+        <p>新しいゲームは、準備ができ次第こちらに公開します。</p>
+        <span class="visual-label">公開準備中</span>
+      </article>
+    `;
+    return;
+  }
   target.innerHTML = items
     .map(
       (item) => `
         <article class="card">
           <div class="card-visual ${item.theme || ""}">
             <span class="visual-label">${item.status}</span>
+            <span class="game-wordmark" aria-hidden="true">${item.title}</span>
           </div>
           <div class="card-body">
             <h3>${item.title}</h3>
@@ -46,6 +58,7 @@ const renderAppCards = (items) => {
       const cardContent = `
         <div class="card-visual ${item.theme || ""}">
           <span class="visual-label">${item.status}</span>
+          ${item.image ? `<img class="app-card-icon" src="${item.image}" alt="" loading="lazy" width="62" height="62" />` : '<span class="next-project-mark" aria-hidden="true">＋</span>'}
         </div>
         <div class="card-body">
           <h3>${item.title}</h3>
@@ -106,7 +119,4 @@ renderCards(content.games, "games-list");
 renderNews();
 renderBlog();
 
-document.getElementById("game-count").textContent = content.games.length;
-document.getElementById("news-count").textContent = content.news.length;
-document.getElementById("blog-count").textContent = content.blog.length;
 document.getElementById("year").textContent = new Date().getFullYear();

@@ -8,32 +8,19 @@ window.siteContent = {
       tags: ["Android", "習慣化", "タイマー", "ポモドーロ"],
       theme: "warm",
       url: "apps/tsumiage/",
+      image: "https://play-lh.googleusercontent.com/SMDvDSTu8u1zsRSaFNpSJ75bs0Q22etB4TUv7D8YBKhCLHa-Joj7HjKPqtRqhsBVxji-SAuv13us8pmOtUT4=w240-h240-rw",
     },
     {
-      title: "Next Project Slot",
+      title: "次のアイデアを、制作中",
       status: "追加予定",
       description:
-        "次に公開するアプリやツールの紹介枠です。完成したら内容を差し替えます。",
+        "次のアプリやツールも、準備ができたらこちらでお知らせします。",
       tags: ["App", "Tool", "Coming Soon"],
       theme: "cool",
     },
   ],
-  games: [
-    {
-      title: "Click Sprint",
-      status: "プレイ可能",
-      description:
-        "10秒間でどれだけクリックできるかを競う、最初のサンプルゲームです。",
-      tags: ["Mini Game", "JavaScript"],
-      theme: "warm",
-      links: [
-        {
-          label: "Play",
-          url: "games/click-sprint/",
-        },
-      ],
-    },
-  ],
+  // 公開するゲームを追加すると、準備中の表示が作品一覧に切り替わります。
+  games: [],
   news: [
     {
       date: "2026-06-01",
