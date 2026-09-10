@@ -6,24 +6,29 @@
     <meta name="description" content="SoloCreateのゲームとアプリ。毎日の努力を記録する積み上げアプリと制作の記録を公開しています。新しいゲームも順次公開予定です。" />
     <meta name="theme-color" content="#f6f7f8" />
     <title>SoloCreate | 毎日をつくるアプリとゲーム。</title>
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260910-5" />
+    <link rel="preload" href="assets/images/hero-growth.jpg" as="image" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260910-7" />
   </head>
   <body class="portfolio-home">
     <a class="skip-link" href="#top">本文へスキップ</a>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="SoloCreate ホーム"><span class="brand-mark">SC<span aria-hidden="true">.</span></span><span>SoloCreate</span></a>
       <nav class="site-nav" aria-label="メインナビゲーション">
-        <a href="apps/">アプリ</a><a href="games/">ゲーム</a><a href="blog/">制作ログ</a><a href="updates/">お知らせ</a><a href="profile/">プロフィール</a>
+        <a href="apps/">アプリ</a><a href="games/">ゲーム</a><a href="updates/">アップデート</a><a href="blog/">ブログ</a><a href="profile/">プロフィール</a>
       </nav>
     </header>
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow">Independent development / SoloCreate</p>
-          <h1 id="hero-title">続けた分だけ、<br />毎日は<span class="accent-word">変わっていく。</span></h1>
-          <p class="hero-lead">勉強、運動、読書、作業時間。日々の努力を記録して、<br class="desktop-break" />積み上がる実感をつくるアプリを公開しています。</p>
-          <div class="hero-actions"><a class="button primary" href="apps/tsumiage/">積み上げアプリを見る <span aria-hidden="true">↗</span></a><a class="button ghost" href="https://play.google.com/store/apps/details?id=space.manus.tsumage.app.t20251223162223" target="_blank" rel="noreferrer">Google Play</a></div>
+        <div class="hero-banner">
+          <div class="hero-copy">
+            <p class="eyebrow">Independent development / SoloCreate</p>
+            <h1 id="hero-title">続けた分だけ、<br />毎日は<span class="accent-word">変わっていく。</span></h1>
+            <p class="hero-lead">小さなアイデアを、使えるアプリと遊べるゲームへ。</p>
+          </div>
         </div>
+      </section>
+      <section class="release-showcase" aria-labelledby="release-showcase-title">
+        <div class="release-intro"><p class="eyebrow">Featured release</p><h2 id="release-showcase-title">現在公開中のアプリ</h2><p>日々の努力を記録し、積み上がる実感をつくる習慣化サポートアプリです。</p><div class="hero-actions"><a class="button primary" href="apps/tsumiage/">詳しく見る <span aria-hidden="true">↗</span></a><a class="button ghost" href="https://play.google.com/store/apps/details?id=space.manus.tsumage.app.t20251223162223" target="_blank" rel="noreferrer">Google Play</a></div></div>
         <a class="app-feature" href="apps/tsumiage/" aria-label="積み上げアプリの紹介を見る">
           <div class="feature-top"><span class="feature-label">NOW AVAILABLE</span><span class="feature-index">01 / APPLICATION</span></div>
           <div class="featured-app-name">
@@ -42,13 +47,13 @@
         <div class="section-heading"><div><a class="section-link" href="games/">02 / Games <span aria-hidden="true">↗</span></a><h2 id="games-title">ゲーム</h2></div><p>これから公開するゲームを、ここに。</p></div>
         <div class="card-grid featured-grid" id="games-list"></div>
       </section>
-      <section class="section blog-section" id="blog" aria-labelledby="blog-title">
-        <div class="section-heading"><div><a class="section-link" href="blog/">03 / Dev journal <span aria-hidden="true">↗</span></a><h2 id="blog-title">つくる途中の、記録。</h2></div><p>試したこと、考えたこと、これからのこと。</p></div>
-        <div class="blog-list" id="blog-list"></div>
-      </section>
       <section class="section" id="updates" aria-labelledby="updates-title">
-        <div class="section-heading"><div><a class="section-link" href="updates/">04 / Updates <span aria-hidden="true">↗</span></a><h2 id="updates-title">お知らせ</h2></div><p>新しい公開と、小さなアップデート。</p></div>
+        <div class="section-heading"><div><a class="section-link" href="updates/">03 / Updates <span aria-hidden="true">↗</span></a><h2 id="updates-title">アップデート</h2></div><p>新しい公開と、小さなアップデート。</p></div>
         <div class="timeline" id="news-list"></div>
+      </section>
+      <section class="section blog-section" id="blog" aria-labelledby="blog-title">
+        <div class="section-heading"><div><a class="section-link" href="blog/">04 / Blog <span aria-hidden="true">↗</span></a><h2 id="blog-title">ブログ</h2></div><p>作ったもの、変えたことを紹介します。</p></div>
+        <div class="blog-list" id="blog-list"></div>
       </section>
       <section class="section about" id="about" aria-labelledby="about-title">
         <div><a class="section-link light" href="profile/">05 / Profile <span aria-hidden="true">↗</span></a><h2 id="about-title">思いついたら、<br />つくってみる。</h2></div>
