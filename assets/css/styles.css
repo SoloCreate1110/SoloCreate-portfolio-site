@@ -122,7 +122,7 @@ h3 {
   height:40px;
   overflow:hidden;
   border-radius:12px;
-  background:#f8f4eb url("../images/solocreate-icon.png") center / cover no-repeat;
+  background:#f8f4eb url("../images/solocreate-mascot.png") center / cover no-repeat;
   color:transparent;
   font-size:.85rem;
   display:flex;
@@ -760,7 +760,7 @@ h3 {
   place-content:center;
   overflow:hidden;
   border-radius:24px;
-  background:#f8f4eb url("../images/solocreate-icon.png") center / cover no-repeat;
+  background:#f8f4eb url("../images/solocreate-mascot.png") center / cover no-repeat;
   color:transparent;
   font-size:clamp(3rem,8vw,6rem);
   font-weight:900;
