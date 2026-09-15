@@ -6,6 +6,8 @@ export type GachaItem = {
 export type GachaHistory = {
   id: string;
   resultName: string;
+  itemId?: string;
+  mode?: 'random' | 'cycle';
   createdAt: string;
 };
 
@@ -14,6 +16,8 @@ export type GachaData = {
   title: string;
   items: GachaItem[];
   histories: GachaHistory[];
+  mode?: 'random' | 'cycle';
+  remaining?: string[];
   createdAt: string;
   updatedAt: string;
 };
