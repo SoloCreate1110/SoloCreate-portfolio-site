@@ -5,23 +5,29 @@ window.siteContent = {
       status: "Google Playで公開中",
       description:
         "勉強・運動・読書・作業時間などを記録し、毎日の努力を見える化する習慣化サポートアプリです。",
-      tags: ["Android", "習慣化", "タイマー", "ポモドーロ"],
+      tags: ["モバイルアプリ", "Android", "習慣化", "タイマー", "ポモドーロ"],
       theme: "warm",
       url: "apps/tsumiage/",
       image: "https://play-lh.googleusercontent.com/SMDvDSTu8u1zsRSaFNpSJ75bs0Q22etB4TUv7D8YBKhCLHa-Joj7HjKPqtRqhsBVxji-SAuv13us8pmOtUT4=w240-h240-rw",
     },
     {
-      title: "次のアイデアを、制作中",
-      status: "追加予定",
-      description:
-        "次のアプリやツールも、準備ができたらこちらでお知らせします。",
-      tags: ["App", "Tool", "Coming Soon"],
-      theme: "cool",
+      title: "まよったらガチャ",
+      status: "ブラウザで公開中",
+      description: "ランチや休日の予定に迷ったら。自分で登録した候補から、ガチャでひとつを選べます。",
+      tags: ["ブラウザアプリ", "無料", "インストール不要"],
+      theme: "warm",
+      symbol: "？",
+      url: "apps/mayottara-gacha/",
     },
   ],
   // 公開するゲームを追加すると、準備中の表示が作品一覧に切り替わります。
   games: [],
   news: [
+    {
+      date: "2026-09-15",
+      title: "ブラウザアプリ「まよったらガチャ」を公開",
+      body: "ホームページからそのまま使えるガチャアプリを追加しました。アプリ一覧もブラウザアプリとモバイルアプリに分けました。",
+    },
     {
       date: "2026-06-01",
       title: "リリース済みアプリ「積み上げアプリ」を追加",

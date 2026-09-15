@@ -26,3 +26,11 @@ python -m http.server 8000
 ```
 
 その後、`http://localhost:8000` を開きます。
+
+## ブラウザアプリの更新
+
+- アプリ一覧は `apps/index.html` でブラウザアプリとモバイルアプリに分類します。
+- ガチャの紹介: `apps/mayottara-gacha/`、起動画面: `apps/mayottara-gacha/play/`。
+- ガチャのソースは `tools/mayottara-gacha/`。そのフォルダで `npm ci`、`npm run build` を実行すると公開用ファイルが更新されます。
+- ソースと生成された `play/` をまとめてコミットし、`main` にpushするとGitHub Pagesへ反映されます。
+- 保存データを維持するため、公開パスとlocalStorageのキーを継続利用してください。

@@ -58,7 +58,7 @@ const renderAppCards = (items) => {
       const cardContent = `
         <div class="card-visual ${item.theme || ""}">
           <span class="visual-label">${item.status}</span>
-          ${item.image ? `<img class="app-card-icon" src="${item.image}" alt="" loading="lazy" width="62" height="62" />` : '<span class="next-project-mark" aria-hidden="true">＋</span>'}
+          ${item.image ? `<img class="app-card-icon" src="${item.image}" alt="" loading="lazy" width="62" height="62" />` : `<span class="next-project-mark" aria-hidden="true">${item.symbol || "＋"}</span>`}
         </div>
         <div class="card-body">
           <h3>${item.title}</h3>
