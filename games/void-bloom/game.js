@@ -166,15 +166,15 @@ function updateHazards(dt){
     }
     h.remaining-=dt;
     if(h.phase==='warning'&&h.remaining<=0){
-      h.phase='active';h.remaining=h.type==='bomb'?.45:.38;
+      h.phase='active';h.remaining=h.type==='whiteZone'?.8:h.type==='bomb'?.45:.38;
       tone(h.type==='bomb'?85:260,.25,'sawtooth',.055,h.type==='bomb'?-50:500);
       if(h.type==='bomb'){ring(h.x,h.y,'#ff637f',h.r);burst(h.x,h.y,'#ff637f',32,1.2);}
       shake=Math.max(shake,reduced?0:5);
     }
     if(h.phase==='active'){
-      const inside=h.type==='bomb'?Math.hypot(ship.x-h.x,ship.y-h.y)<h.r+8:segmentDistance(ship.x,ship.y,h.x,h.y,h.tx,h.ty)<h.width/2+8;
-      if(inside&&!h.hit){hurt(h.damage,h.type==='bomb'?'red':'purple');h.hit=true;}
-      if(h.remaining<=0){h.dead=true;h.owner.phase='ready';h.owner.fire=h.type==='bomb'?3.2:3;}
+      const inside=h.type==='whiteZone'?ship.x+8>h.x&&ship.x-8<h.x+h.width&&ship.y+8>h.y&&ship.y-8<h.y+h.height:h.type==='bomb'?Math.hypot(ship.x-h.x,ship.y-h.y)<h.r+8:segmentDistance(ship.x,ship.y,h.x,h.y,h.tx,h.ty)<h.width/2+8;
+      if(inside&&!h.hit){hurt(h.damage,h.type==='whiteZone'?'white':h.type==='bomb'?'red':'purple');h.hit=true;}
+      if(h.remaining<=0){h.dead=true;if(h.type==='whiteZone'){h.owner.whiteCharge=0;h.owner.fire=Math.max(h.owner.fire,1);}else{h.owner.phase='ready';h.owner.fire=h.type==='bomb'?3.2:3;}}
     }
   }
   hazards=hazards.filter(h=>!h.dead);
@@ -195,21 +195,21 @@ if(i===2){const xs=stats.count===3?[ship.x-70,ship.x,ship.x+70]:[ship.x];for(con
 if(i===3){for(let n=0;n<stats.count;n++)bullet(ship.x+(n-(l/2))*12,ship.y-10,rand(-180,180),-220,stats.damage,c,5,false,true);}
 if(i===4){let from={x:ship.x,y:ship.y-20};const hit=new Set();for(let n=0;n<stats.count;n++){const pool=enemies.filter(e=>e.hp>0&&e.y>0&&!hit.has(e)).sort((a,b)=>(a.x-from.x)**2+(a.y-from.y)**2-((b.x-from.x)**2+(b.y-from.y)**2));const e=pool[0];if(!e)break;hit.add(e);effects.push({type:'lightning',x:from.x,y:from.y,tx:e.x,ty:e.y,c,life:.22,max:.22});cancelOrangeAlong(from.x,from.y,e.x,e.y,5);damage(e,stats.damage,c);from=e;}}
 if(i===5){for(let n=0;n<stats.count;n++){const a=time*1.7+n*Math.PI*2/stats.count;const x=ship.x+Math.cos(a)*44,y=ship.y+Math.sin(a)*25;bullet(x,y,Math.cos(a)*60,-500,stats.damage,c,3,stats.pierce);}}}}
-// Only later bosses use rare, uncancellable white shots.
+// Rare white attacks mark a fixed, wide danger lane instead of firing a projectile.
 function updateBossWhite(e,dt){
   if(wave<8||e.y<90)return;
-  if(e.whiteCharge>0){
-    e.whiteCharge-=dt;
-    if(e.whiteCharge<=0){const a=Math.atan2(ship.y-e.y,ship.x-e.x);hostile.push({x:e.x,y:e.y+32,vx:Math.cos(a)*145,vy:Math.sin(a)*145,r:8,dmg:MAX_HP,kind:'white'});e.whiteClock=20;tone(180,.3,'sine',.05,-90);}
-  }else{
-    e.whiteClock=(e.whiteClock??12)-dt;
-    if(e.whiteClock<=0){e.whiteCharge=1.2;toast('WHITE ALERT — 白弾はHP全損','#ffffff');ring(e.x,e.y,'#ffffff',85);}
-  }
+  if(e.whiteHazard&&!e.whiteHazard.dead){e.whiteCharge=e.whiteHazard.phase==='warning'?e.whiteHazard.remaining:0;return;}
+  e.whiteCharge=0;e.whiteClock=(e.whiteClock??12)-dt;
+  if(e.whiteClock>0)return;
+  const width=wave===12?200:170;
+  const h={type:'whiteZone',owner:e,x:clamp(ship.x-width/2,18,W-width-18),y:180,width,height:H-180,remaining:3,total:3,phase:'warning',hit:false,damage:MAX_HP};
+  hazards.push(h);e.whiteHazard=h;e.whiteCharge=3;e.whiteClock=20;
+  toast('DANGER — 白い範囲から退避','#ffffff');tone(420,.25,'sine',.06,-100);
 }
 function hurt(amount=12+wave,kind='orange'){if(ship.inv>0||(barrier>0&&kind==='orange')||state!=='playing')return;ship.hp=kind==='white'?0:Math.max(0,ship.hp-amount*(kind==='orange'?1-skillLevels[5]*.08:1));ship.inv=1.1;shake=reduced?0:12;flash=.2;burst(ship.x,ship.y,'#ff698e',25);tone(110,.3,'sawtooth',.06,-70);if(ship.hp<=0&&ship.hearts>0){ship.hearts--;ship.hp=maxHp();ship.inv=3;ring(ship.x,ship.y,'#ff86ad',140);burst(ship.x,ship.y,'#ff86ad',40);toast('REVIVE — HP FULL · 3秒間無敵','#ffb5cd');tone(660,.5,'sine',.08,300);}ui();if(ship.hp<=0)finish(false);}
 function update(dt){visualTime+=dt;for(const s of stars){s.y+=(state==='playing'?28:9)*s.z*dt;if(s.y>H){s.y=0;s.x=rand(0,W);}}if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show');}if(state!=='playing')return;time+=dt;waveTime+=dt;ship.inv-=dt;barrier=Math.max(0,barrier-dt);shieldCd=Math.max(0,shieldCd-dt);const movementSpeed=300*(1+skillLevels[4]*.08)*(keys.Space?.5:1);shake=Math.max(0,shake-dt*30);flash=Math.max(0,flash-dt);let dx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0),dy=(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0);if(dx||dy){const norm=Math.hypot(dx,dy);ship.x+=dx/norm*movementSpeed*dt;ship.y+=dy/norm*movementSpeed*dt;}if(pointer){const px=pointer.x-ship.x,py=pointer.y-ship.y,distance=Math.hypot(px,py),step=Math.min(distance,movementSpeed*dt);ship.x+=px/(distance||1)*step;ship.y+=py/(distance||1)*step;}ship.x=clamp(ship.x,22,W-22);ship.y=clamp(ship.y,H*.72,H-25);
 spawnClock-=dt;if(spawnClock<=0){spawn();spawnClock=wavePacing().interval;}shoot(dt);
-for(const e of enemies){if(e.hp<=0)continue;e.t+=dt;e.hit-=dt;e.fire-=dt;if(e.role){updateSpecial(e,dt);continue;}if(e.boss){e.y=Math.min(135,e.y+dt*65);e.x=240+Math.sin(e.t*.65)*145;if(e.fire<=0&&e.y>90){const n=wave===12?17:wave===4?7:11;for(let j=0;j<n;j++){const a=Math.PI/2+(j-(n-1)/2)*.16+Math.sin(e.t)*.2;hostile.push({x:e.x,y:e.y+30,vx:Math.cos(a)*(150+wave*4),vy:Math.sin(a)*(150+wave*4),r:6,dmg:18+wave,kind:j%5===2?'orange':j%2===0?'purple':'red'});}e.fire=wave===12?.7:wave===4?1.4:1;}updateBossWhite(e,dt);$('bossLife').style.width=Math.max(0,e.hp/e.max*100)+'%';}else{e.y+=e.v*dt;e.x+=Math.cos(e.t*1.4)*dt*(e.type===1?24:9);if(e.canShoot!==false&&e.fire<=0&&e.y>80&&e.y<510&&time>7){const aim=Math.atan2(ship.y-e.y,ship.x-e.x);const count=e.type===2&&wave>=3?3:1;for(let j=0;j<count;j++){const a=aim+(j-(count-1)/2)*.18;hostile.push({x:e.x,y:e.y+15,vx:Math.cos(a)*(105+wave*5),vy:Math.sin(a)*(105+wave*5),r:5,dmg:10+wave+e.type*2,kind:['orange','red','purple'][e.type]});}e.fire=wave<=3?rand(5,6.5):rand(2.5,4.5)/(1+wave*.055);}if(e.y>H-10){e.hp=0;if(!e.runner)hurt(15+wave);}}if(Math.hypot(e.x-ship.x,e.y-ship.y)<e.r+13){hurt(22+wave);if(!e.boss)damage(e,999,'#ff698e');}}
+for(const e of enemies){if(e.hp<=0)continue;e.t+=dt;e.hit-=dt;e.fire-=dt;if(e.role){updateSpecial(e,dt);continue;}if(e.boss){e.y=Math.min(135,e.y+dt*65);e.x=240+Math.sin(e.t*.65)*145;if(e.fire<=0&&e.y>90&&!(e.whiteHazard&&!e.whiteHazard.dead)){const n=wave===12?17:wave===4?7:11;for(let j=0;j<n;j++){const a=Math.PI/2+(j-(n-1)/2)*.16+Math.sin(e.t)*.2;hostile.push({x:e.x,y:e.y+30,vx:Math.cos(a)*(150+wave*4),vy:Math.sin(a)*(150+wave*4),r:6,dmg:18+wave,kind:j%5===2?'orange':j%2===0?'purple':'red'});}e.fire=wave===12?.7:wave===4?1.4:1;}updateBossWhite(e,dt);$('bossLife').style.width=Math.max(0,e.hp/e.max*100)+'%';}else{e.y+=e.v*dt;e.x+=Math.cos(e.t*1.4)*dt*(e.type===1?24:9);if(e.canShoot!==false&&e.fire<=0&&e.y>80&&e.y<510&&time>7){const aim=Math.atan2(ship.y-e.y,ship.x-e.x);const count=e.type===2&&wave>=3?3:1;for(let j=0;j<count;j++){const a=aim+(j-(count-1)/2)*.18;hostile.push({x:e.x,y:e.y+15,vx:Math.cos(a)*(105+wave*5),vy:Math.sin(a)*(105+wave*5),r:5,dmg:10+wave+e.type*2,kind:['orange','red','purple'][e.type]});}e.fire=wave<=3?rand(5,6.5):rand(2.5,4.5)/(1+wave*.055);}if(e.y>H-10){e.hp=0;if(!e.runner)hurt(15+wave);}}if(Math.hypot(e.x-ship.x,e.y-ship.y)<e.r+13){hurt(22+wave);if(!e.boss)damage(e,999,'#ff698e');}}
 for(const b of hostile){b.px=b.x;b.py=b.y;b.x+=b.vx*dt;b.y+=b.vy*dt;}
 for(const b of bullets){const px=b.x,py=b.y;b.life-=dt;if(b.homing){const e=target(b.x,b.y);if(e){const angle=Math.atan2(e.y-b.y,e.x-b.x);b.vx+=(Math.cos(angle)*390-b.vx)*dt*5;b.vy+=(Math.sin(angle)*390-b.vy)*dt*5;}if(Math.random()<.5)particles.push({x:b.x,y:b.y,vx:0,vy:30,life:.2,max:.2,c:b.c,s:2});}b.x+=b.vx*dt;b.y+=b.vy*dt;for(const h of hostile){if(h.dead||!canCancel(h))continue;if(segmentDistance(0,0,px-h.px,py-h.py,b.x-h.x,b.y-h.y)<=b.r+h.r){h.dead=true;burst(h.x,h.y,ENEMY_SHOTS.orange.color,5,.5);if(b.homing){ring(h.x,h.y,b.c,55);cancelOrangeNear(h.x,h.y,55);}if(!b.pierce){b.life=0;break;}}}if(b.life<=0)continue;for(const e of enemies){if(e.hp<=0||b.hit.has(e))continue;if(Math.abs(e.y-b.y)<e.r+b.r+8&&Math.abs(e.x-b.x)<e.r+b.r){b.hit.add(e);damage(e,b.dmg,b.c);if(b.homing){ring(b.x,b.y,b.c,55);cancelOrangeNear(b.x,b.y,55);for(const o of enemies)if(o!==e&&Math.hypot(o.x-b.x,o.y-b.y)<70)damage(o,b.dmg*.6,b.c);}if(!b.pierce){b.life=0;break;}}}}
 bullets=bullets.filter(b=>b.life>0&&b.y>-40&&b.y<H+50&&b.x>-80&&b.x<W+80);for(const effect of effects){if(effect.type==='beam')cancelOrangeAlong(effect.x,0,effect.x,effect.y,effect.w/2);else if(effect.type==='lightning')cancelOrangeAlong(effect.x,effect.y,effect.tx,effect.ty,5);}
@@ -243,6 +243,16 @@ function drawHazards(){
   for(const h of hazards){
     if(h.owner.hp<=0)continue;
     ctx.save();const warning=h.phase==='warning',c=h.type==='bomb'?'#ff637f':'#da94ff';
+    if(h.type==='whiteZone'){
+      ctx.shadowBlur=0;ctx.fillStyle=warning?'rgba(255,255,255,.10)':'rgba(255,255,255,.86)';ctx.fillRect(h.x,h.y,h.width,h.height);
+      ctx.save();ctx.beginPath();ctx.rect(h.x,h.y,h.width,h.height);ctx.clip();ctx.strokeStyle=warning?'#ffffff40':'#ffffff';ctx.lineWidth=warning?2:5;
+      for(let y=h.y-h.width;y<H;y+=28){ctx.beginPath();ctx.moveTo(h.x,y);ctx.lineTo(h.x+h.width,y+h.width);ctx.stroke();}ctx.restore();
+      glow('#ffffff',warning?8:30);ctx.lineWidth=4;ctx.strokeRect(h.x,h.y,h.width,h.height);
+      const cx=h.x+h.width/2,cy=H*.79;ctx.shadowBlur=0;ctx.fillStyle='#0a0e16';ctx.fillRect(cx-76,cy-30,152,90);
+      ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.font='900 23px monospace';ctx.fillText('DANGER',cx,cy-5);ctx.font='bold 13px sans-serif';ctx.fillText('立入禁止 · HP全損',cx,cy+17);ctx.font='bold 18px monospace';ctx.fillText(warning?Math.max(0,h.remaining).toFixed(1)+'s':'発動中',cx,cy+43);
+      if(warning){ctx.fillStyle='#ffffff';ctx.fillRect(h.x,h.y-8,h.width*clamp(h.remaining/h.total,0,1),4);}
+      ctx.restore();continue;
+    }
     ctx.shadowBlur=0;ctx.strokeStyle=c;ctx.lineWidth=1.5;
     if(h.type==='bomb'){
       if(warning){
