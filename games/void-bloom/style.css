@@ -11,3 +11,5 @@
 .upgrade-stat,.upgrade-stat strong{font-size:12px}
 
 .danger-dot.orange,.danger-dot.red,.danger-dot.purple{border:0;box-shadow:0 0 7px currentColor}.danger-dot.orange{background:#ff9a3c;color:#ff9a3c}.danger-dot.red{background:#ff3c55;color:#ff3c55}.danger-dot.purple{background:#be60ff;color:#be60ff}.hazard-note{font-size:11px;color:#ff97b0;line-height:1.8;letter-spacing:1px}.hazard-note span{color:#91a1b5;letter-spacing:0;font-size:10px}
+
+.revive-heart{color:#ff86ad;font:700 16px monospace;white-space:nowrap;text-shadow:0 0 10px #ff86ad55}.revive-heart.spent{color:#687387;text-shadow:none}.combat-legend .danger-dot.white{background:#fff;box-shadow:0 0 7px #ffffff99}
