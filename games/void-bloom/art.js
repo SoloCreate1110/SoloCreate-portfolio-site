@@ -31,8 +31,10 @@ window.VoidArt=(()=>{
     art.carrier=crop(sheet,40,556,894,249);
     art.earth=crop(sheet,23,912,1208,318);
     portrait();
+    art.poses=art.poses.map(source=>{const c=document.createElement('canvas');c.width=36;c.height=72;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(source,0,0,36,72);return c;});
+    const c=document.createElement('canvas');c.width=200;c.height=56;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(art.carrier,0,0,200,56);art.carrier=c;
   });
-  art.background=(ctx,t)=>{
+  const paintBackground=(ctx,t)=>{
     ctx.save();ctx.shadowBlur=0;
     const mist=ctx.createRadialGradient(360,220,5,250,340,420);mist.addColorStop(0,'#17395655');mist.addColorStop(.5,'#1d163326');mist.addColorStop(1,'#02070e00');ctx.fillStyle=mist;ctx.fillRect(0,0,480,720);
     // Planet rises past the lower edge, leaving the combat field unobstructed.
@@ -42,6 +44,8 @@ window.VoidArt=(()=>{
     
     ctx.restore();
   };
+  let background=null,backgroundEarth=null;
+  art.background=(ctx,t)=>{if(!background||backgroundEarth!==art.earth){background=document.createElement('canvas');background.width=480;background.height=720;paintBackground(background.getContext('2d'),t);backgroundEarth=art.earth;}ctx.drawImage(background,0,0);};
   art.mothership=(ctx,t)=>{
     if(art.carrier){ctx.save();ctx.shadowBlur=0;ctx.globalAlpha=.82;ctx.imageSmoothingEnabled=false;ctx.drawImage(art.carrier,140,665,200,56);ctx.restore();return;}
     ctx.save();ctx.translate(240,690);ctx.shadowBlur=0;
