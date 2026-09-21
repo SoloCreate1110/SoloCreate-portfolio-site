@@ -1151,6 +1151,29 @@ h3 {
   line-height:2;
 }
 
+.article-content img {
+  display:block;
+  width:100%;
+  height:auto;
+  margin:32px 0;
+  border-radius:18px;
+}
+
+.article-content ul,
+.article-content ol {
+  margin:0 0 24px 1.4em;
+  color:#4f575c;
+  line-height:1.9;
+}
+
+.article-content blockquote {
+  margin:32px 0;
+  padding:18px 24px;
+  border-left:4px solid var(--accent);
+  background:#f3f6ee;
+  color:#4f575c;
+}
+
 .article-callout {
   margin:42px 0;
   padding:28px;

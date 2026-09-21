@@ -100,6 +100,7 @@ const renderNews = () => {
 
 const renderBlog = () => {
   const target = document.getElementById("blog-list");
+  if (target.dataset.rendered === "jekyll") return;
   target.innerHTML = content.blog
     .map(
       (item) => `

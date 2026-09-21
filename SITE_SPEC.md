@@ -82,6 +82,11 @@ SoloCreateが公開するアプリ、ゲーム、更新情報、制作記事、�
 - 一覧カードは同じ幅と高さで、上から1列に並べる。
 - カード全体をクリックまたはキーボード操作できる。
 - 各記事に日付、カテゴリー、本文、一覧へ戻るリンクを設ける。
+- Pages CMSを利用し、GitHubアカウントでログインした管理画面から記事を作成・編集する。
+- 記事は `_posts/` のMarkdownファイルとして保存し、GitHub Pagesが `/blog/<slug>/` に生成する。
+- 管理項目はタイトル、URL名、公開日、公開状態、概要、タグ、カバー画像、本文、関連リンクとする。
+- アップロード画像は `assets/images/blog/` に保存する。
+- 公開記事はブログ一覧とトップページへ日付順に自動反映する。
 
 ### ゲーム
 
@@ -95,7 +100,9 @@ SoloCreateが公開するアプリ、ゲーム、更新情報、制作記事、�
 - ホームの描画処理: `assets/js/main.js`
 - 共通デザイン: `assets/css/styles.css`
 - ブログ一覧: `blog/index.html`
-- ブログ記事: `blog/記事名/index.html`
+- ブログ管理設定: `.pages.yml`
+- ブログ記事: `_posts/YYYY-MM-DD-記事名.md`
+- ブログ記事レイアウト: `_layouts/blog-post.html`
 - アップデート一覧: `updates/index.html`
 
 ## 7. 完了条件

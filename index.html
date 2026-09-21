@@ -1,3 +1,5 @@
+---
+---
 <!doctype html>
 <html lang="ja">
   <head>
@@ -48,7 +50,12 @@
       </section>
       <section class="section blog-section" id="blog" aria-labelledby="blog-title">
         <div class="section-heading"><div><a class="section-link" href="blog/">05 / Blog <span aria-hidden="true">↗</span></a><h2 id="blog-title">ブログ</h2></div><p>作ったもの、変えたことを紹介します。</p></div>
-        <div class="blog-list" id="blog-list"></div>
+        <div class="blog-list" id="blog-list" data-rendered="jekyll">
+          {% assign published_posts = site.posts | where_exp: "post", "post.published != false" %}
+          {% for post in published_posts limit:3 %}
+          <a class="blog-card" href="{{ post.url | relative_url }}" aria-label="{{ post.title | escape }}を読む"><article><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y.%m.%d' }}</time><h3>{{ post.title }}</h3><p>{{ post.excerpt }}</p><ul class="tag-list">{% for tag in post.tags %}<li>{{ tag }}</li>{% endfor %}</ul><span class="blog-card-cta">記事を読む <span aria-hidden="true">→</span></span></article></a>
+          {% endfor %}
+        </div>
       </section>
       <section class="section about" id="about" aria-labelledby="about-title">
         <div><a class="section-link light" href="profile/">06 / Profile <span aria-hidden="true">↗</span></a><h2 id="about-title">思いついたら、<br />つくってみる。</h2></div>

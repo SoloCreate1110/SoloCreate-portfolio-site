@@ -1,0 +1,17 @@
+title: SoloCreate
+description: SoloCreateのアプリ、ゲーム、制作記録をまとめたポートフォリオサイトです。
+url: https://solocreate1110.github.io
+baseurl: /SoloCreate-portfolio-site
+lang: ja
+timezone: Asia/Tokyo
+markdown: kramdown
+permalink: /blog/:title/
+
+exclude:
+  - README.md
+  - SITE_SPEC.md
+  - docs
+  - scripts
+  - tools
+  - portfolio-site
+

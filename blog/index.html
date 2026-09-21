@@ -1,3 +1,5 @@
+---
+---
 <!doctype html>
 <html lang="ja">
   <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="description" content="SoloCreateが作ったアプリ、ゲーム、サイトの紹介ブログです。" /><title>Blog | SoloCreate</title><link rel="icon" type="image/png" href="../assets/images/solocreate-mascot.png" /><link rel="stylesheet" href="../assets/css/styles.css?v=20260921-1" /></head>
@@ -6,8 +8,10 @@
     <main class="detail-main">
       <header class="detail-hero"><div><span class="detail-number">05 / Blog</span><h1>ブログ</h1><p class="detail-lead">作ったものや変更したことを、背景やこだわりと一緒に紹介します。</p></div><a class="back-home" href="../">← トップへ戻る</a></header>
       <section class="detail-section story-grid" aria-label="ブログ記事一覧">
-        <a class="story-card featured-story" href="tsumiage-release/" aria-label="「積み上げアプリ」を公開しましたを読む"><div class="story-visual"><img src="https://play-lh.googleusercontent.com/SMDvDSTu8u1zsRSaFNpSJ75bs0Q22etB4TUv7D8YBKhCLHa-Joj7HjKPqtRqhsBVxji-SAuv13us8pmOtUT4=w240-h240-rw" alt="積み上げアプリのアイコン" /></div><article class="story-body"><div class="story-meta"><time datetime="2026-06-01">2026.06.01</time><span>アプリ制作</span></div><h2>「積み上げアプリ」を公開しました</h2><p>毎日の勉強、運動、読書、作業時間を記録し、続けた努力を見える化するアプリです。目標までの進み具合を、カレンダーや統計で振り返れます。</p><span class="text-link">記事を読む</span></article></a>
-        <a class="story-card" href="portfolio-launch/" aria-label="作品を届けるためのサイトを作りましたを読む"><div class="story-number" aria-hidden="true">SC / WEB</div><article class="story-body"><div class="story-meta"><time datetime="2026-05-30">2026.05.30</time><span>Web制作</span></div><h2>作品を届けるためのサイトを作りました</h2><p>公開したアプリやこれから作るゲーム、日々の変更を一つの場所から見られるように、SoloCreateのポートフォリオサイトを作りました。</p><span class="text-link">記事を読む</span></article></a>
+        {% assign published_posts = site.posts | where_exp: "post", "post.published != false" %}
+        {% for post in published_posts %}
+        <a class="story-card{% if post.featured %} featured-story{% endif %}" href="{{ post.url | relative_url }}" aria-label="{{ post.title | escape }}を読む">{% if post.cover_image %}<div class="story-visual"><img src="{{ post.cover_image }}" alt="" loading="lazy" /></div>{% else %}<div class="story-number" aria-hidden="true">{{ post.visual_label | default: 'SC / NOTE' }}</div>{% endif %}<article class="story-body"><div class="story-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y.%m.%d' }}</time><span>{{ post.tags | first }}</span></div><h2>{{ post.title }}</h2><p>{{ post.excerpt }}</p><span class="text-link">記事を読む</span></article></a>
+        {% endfor %}
       </section>
     </main>
     <footer class="site-footer"><a class="brand" href="../">SoloCreate<span class="footer-dot">.</span></a><p>&copy; <span id="year"></span> SoloCreate</p><a href="../profile/">プロフィール</a></footer><script>document.getElementById("year").textContent=new Date().getFullYear();</script>

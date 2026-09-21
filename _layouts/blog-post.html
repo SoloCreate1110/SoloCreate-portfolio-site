@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{ page.excerpt | strip_html | escape }}" />
+    <title>{{ page.title | escape }} | SoloCreate Blog</title>
+    <link rel="icon" type="image/png" href="{{ '/assets/images/solocreate-mascot.png' | relative_url }}" />
+    <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=20260921-2' | relative_url }}" />
+  </head>
+  <body>
+    <header class="site-header"><a class="brand" href="{{ '/' | relative_url }}"><span class="brand-mark">SC<span aria-hidden="true">.</span></span><span>SoloCreate</span></a><nav class="site-nav" aria-label="メインナビゲーション"><a class="nav-primary" href="{{ '/mobile/' | relative_url }}">モバイルアプリ</a><a class="nav-primary" href="{{ '/browser/' | relative_url }}">ブラウザアプリ</a><a class="nav-primary" href="{{ '/console/' | relative_url }}">コンソール</a><a href="{{ '/updates/' | relative_url }}">アップデート</a><a href="{{ '/blog/' | relative_url }}" aria-current="page">ブログ</a><a href="{{ '/profile/' | relative_url }}">プロフィール</a></nav></header>
+    <main class="article-shell">
+      <header class="article-hero"><a class="back-home" href="{{ '/blog/' | relative_url }}">← ブログ一覧へ戻る</a><h1>{{ page.title }}</h1><div class="article-meta"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%Y.%m.%d' }}</time>{% for tag in page.tags %}<span>{{ tag }}</span>{% endfor %}</div></header>
+      <article class="article-content">
+        {{ content }}
+        {% if page.cta_text or page.cta_label %}<aside class="article-callout">{% if page.cta_text %}<p>{{ page.cta_text }}</p>{% endif %}{% if page.cta_label and page.cta_url %}<a class="button primary" href="{{ page.cta_url | relative_url }}">{{ page.cta_label }} <span aria-hidden="true">↗</span></a>{% endif %}</aside>{% endif %}
+        <nav class="article-footer-nav" aria-label="記事ナビゲーション"><a href="{{ '/blog/' | relative_url }}">← ブログ一覧</a><a href="{{ '/' | relative_url }}">トップページ →</a></nav>
+      </article>
+    </main>
+    <footer class="site-footer"><a class="brand" href="{{ '/' | relative_url }}">SoloCreate<span class="footer-dot">.</span></a><p>&copy; <span id="year"></span> SoloCreate</p><a href="{{ '/profile/' | relative_url }}">プロフィール</a></footer><script>document.getElementById("year").textContent=new Date().getFullYear();</script>
+  </body>
+</html>
+
