@@ -290,7 +290,7 @@ function drawHazards(){
   }
 }
 function drawShip(x,y,demo=false){
- if(window.VoidArt){window.VoidArt.tether(ctx,x,y,visualTime);window.VoidArt.heroSprite(ctx,x,y,visualTime,!demo&&ship.inv>0,!demo&&keys.Space);return;}
+ if(window.VoidArt){window.VoidArt.tether(ctx,x,y,visualTime);window.VoidArt.heroSprite(ctx,x,y,visualTime,!demo&&ship.inv>0,!demo&&keys.Space,demo?0:pointer?Math.max(-1,Math.min(1,(pointer.x-x)/40)):(keys.ArrowRight||keys.KeyD?1:0)-(keys.ArrowLeft||keys.KeyA?1:0));return;}
  ctx.save();ctx.translate(x,y);glow('#8edfff',10);ctx.fillRect(-6,-18,12,12);ctx.fillRect(-10,-5,20,18);ctx.fillRect(-9,13,6,14);ctx.fillRect(3,13,6,14);ctx.restore();
 }
 function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#070c17';ctx.fillRect(0,0,W,H);const bg=ctx.createRadialGradient(250,270,0,240,300,420);bg.addColorStop(0,'#112b3040');bg.addColorStop(1,'#080c1600');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);ctx.save();if(shake&&!reduced)ctx.translate(rand(-shake,shake),rand(-shake,shake));ctx.shadowBlur=0;for(const s of stars){ctx.globalAlpha=.25+s.z*.6;ctx.fillStyle=s.z>.8?'#a5d9d0':'#657d9f';ctx.fillRect(s.x,s.y,s.s,s.s);}ctx.globalAlpha=1;window.VoidArt?.background(ctx,visualTime);window.VoidArt?.mothership(ctx,visualTime);ctx.strokeStyle='#5ab9e025';ctx.lineWidth=1;ctx.setLineDash([4,7]);ctx.beginPath();ctx.moveTo(0,H*.7);ctx.lineTo(W,H*.7);ctx.stroke();ctx.setLineDash([]);const zone=ctx.createLinearGradient(0,H*.7,0,H);zone.addColorStop(0,'#55e6b501');zone.addColorStop(1,'#55e6b50b');ctx.fillStyle=zone;ctx.fillRect(0,H*.7,W,H*.3);
