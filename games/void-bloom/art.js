@@ -65,7 +65,7 @@ window.VoidArt=(()=>{
     ctx.save();ctx.translate(x,y);if(inv&&Math.floor(t*12)%2)ctx.globalAlpha=.45;
     // The player's visual center and small collision core stay at the same coordinates.
     const tilt=0.025*Math.sin(t*2);ctx.rotate(tilt);ctx.imageSmoothingEnabled=false;
-    ctx.shadowBlur=0;if(art.hero){const pose=motion<-.2?(motion<-.75?0:1):motion>.2?(motion>.75?4:3):2;ctx.drawImage(art.poses[pose],-18,-29,36,72);}
+    ctx.shadowBlur=0;if(art.hero){const pose=motion<-.2?(motion<-.75?4:3):motion>.2?(motion>.75?0:1):2;ctx.drawImage(art.poses[pose],-18,-29,36,72);}
     else{ctx.fillStyle='#c7dceb';ctx.fillRect(-6,-23,12,12);ctx.fillRect(-11,-10,22,23);ctx.fillRect(-17,-7,5,21);ctx.fillRect(12,-7,5,21);ctx.fillRect(-10,13,7,20);ctx.fillRect(3,13,7,20);ctx.fillStyle='#50dfff';ctx.fillRect(-3,-4,6,8);}
     ctx.globalAlpha=1;ctx.shadowColor='#53dfff';ctx.shadowBlur=8;ctx.fillStyle='#72eaff';ctx.fillRect(-2,-2,4,4);
     if(focus){ctx.shadowBlur=0;ctx.strokeStyle='#ffffff';ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,8,0,Math.PI*2);ctx.stroke();}
