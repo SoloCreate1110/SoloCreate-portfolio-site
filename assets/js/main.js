@@ -51,8 +51,8 @@ const renderCards = (items, targetId) => {
     .join("");
 };
 
-const renderAppCards = (items) => {
-  const target = document.getElementById("apps-list");
+const renderAppCards = (items, targetId) => {
+  const target = document.getElementById(targetId);
   target.innerHTML = items
     .map((item) => {
       const cardContent = `
@@ -117,8 +117,15 @@ const renderBlog = () => {
     .join("");
 };
 
-renderAppCards(content.apps);
-renderCards(content.games, "games-list");
+const projects = [...content.apps, ...content.games.map(item => ({ platform: "browser", ...item })), ...content.console.map(item => ({ platform: "console", ...item }))];
+renderAppCards(projects.filter((item) => item.platform === "mobile"), "mobile-list");
+renderAppCards(projects.filter((item) => item.platform === "browser"), "browser-list");
+const consoleProjects = projects.filter(item => item.platform === "console");
+if (consoleProjects.length) {
+  renderAppCards(consoleProjects, "console-list");
+} else {
+  document.getElementById("console-list").innerHTML = '<article class="console-preview"><span class="eyebrow">Coming soon</span><h3>次の楽しみを、ここから。</h3><p>コンソール向けの作品は、公開準備が整い次第お知らせします。</p></article>';
+}
 renderNews();
 renderBlog();
 

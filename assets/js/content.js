@@ -5,7 +5,8 @@ window.siteContent = {
       status: "Google Playで公開中",
       description:
         "勉強・運動・読書・作業時間などを記録し、毎日の努力を見える化する習慣化サポートアプリです。",
-      tags: ["モバイルアプリ", "Android", "習慣化", "タイマー", "ポモドーロ"],
+      platform: "mobile",
+      tags: ["ツール", "Android", "習慣化", "タイマー", "ポモドーロ"],
       theme: "warm",
       url: "apps/tsumiage/",
       image: "https://play-lh.googleusercontent.com/SMDvDSTu8u1zsRSaFNpSJ75bs0Q22etB4TUv7D8YBKhCLHa-Joj7HjKPqtRqhsBVxji-SAuv13us8pmOtUT4=w240-h240-rw",
@@ -14,23 +15,34 @@ window.siteContent = {
       title: "まよったらガチャ",
       status: "ブラウザで公開中",
       description: "ランチや休日の予定に迷ったら。自分で登録した候補から、ガチャでひとつを選べます。",
-      tags: ["ブラウザアプリ", "無料", "インストール不要"],
+      platform: "browser",
+      tags: ["ツール", "無料", "インストール不要"],
       theme: "warm",
       symbol: "？",
       url: "apps/mayottara-gacha/",
     },
   ],
-  // 公開するゲームを追加すると、準備中の表示が作品一覧に切り替わります。
-  games: [{
-    title: "VOID BLOOM",
-    status: "ブラウザで公開中",
-    description: "インベーダー×ローグライク。経験値で3択の強化を選び、6種類の武器を進化させる爽快シューティング。全12ウェーブとボスに挑もう。",
-    tags: ["ブラウザゲーム", "ローグライク", "シューティング", "スマホ対応"],
-    theme: "cool",
-    links: [{ label: "今すぐ遊ぶ ↗", url: "games/void-bloom/" }],
-  }],
+  // ゲームは tags に「ゲーム」、platform に mobile / browser / console を指定します。
+  games: [
+    {
+      title: "VOID BLOOM",
+      status: "ブラウザで公開中",
+      description:
+        "インベーダー×ローグライク。経験値で3択の強化を選び、6種類の武器を進化させながら全12ウェーブとボスに挑むシューティングゲームです。",
+      platform: "browser",
+      tags: ["ゲーム", "ローグライク", "シューティング", "スマホ対応"],
+      theme: "cool",
+      symbol: "✦",
+      url: "games/void-bloom/",
+    },
+  ],
+  console: [],
   news: [
-    {date: "2026-09-21", title: "VOID BLOOM を公開", body: "武器を進化させて戦うインベーダー×ローグライクを公開しました。PC・スマートフォンのブラウザで遊べます。"},
+    {
+      date: "2026-09-21",
+      title: "ブラウザゲーム「VOID BLOOM」を公開",
+      body: "武器を進化させて戦うインベーダー×ローグライクを公開しました。PC・スマートフォンのブラウザで遊べます。",
+    },
     {
       date: "2026-09-15",
       title: "ブラウザアプリ「まよったらガチャ」を公開",

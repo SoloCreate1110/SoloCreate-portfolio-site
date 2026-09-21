@@ -8,15 +8,13 @@
     <title>SoloCreate | 毎日をつくるアプリとゲーム。</title>
     <link rel="icon" type="image/png" href="assets/images/solocreate-mascot.png" />
     <link rel="preload" href="assets/images/hero-creative.jpg" as="image" />
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260915-1" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260921-1" />
   </head>
   <body class="portfolio-home">
     <a class="skip-link" href="#top">本文へスキップ</a>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="SoloCreate ホーム"><span class="brand-mark">SC<span aria-hidden="true">.</span></span><span>SoloCreate</span></a>
-      <nav class="site-nav" aria-label="メインナビゲーション">
-        <a href="apps/">アプリ</a><a href="games/">ゲーム</a><a href="updates/">アップデート</a><a href="blog/">ブログ</a><a href="profile/">プロフィール</a>
-      </nav>
+      <nav class="site-nav" aria-label="メインナビゲーション"><a class="nav-primary" href="mobile/">モバイルアプリ</a><a class="nav-primary" href="browser/">ブラウザアプリ</a><a class="nav-primary" href="console/">コンソール</a><a href="updates/">アップデート</a><a href="blog/">ブログ</a><a href="profile/">プロフィール</a></nav>
     </header>
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
@@ -28,13 +26,7 @@
           </div>
         </div>
       </section>
-      <nav class="home-section-nav" aria-label="トップページ内メニュー">
-        <a href="#apps"><span>01</span>アプリ</a>
-        <a href="#games"><span>02</span>ゲーム</a>
-        <a href="#updates"><span>03</span>アップデート</a>
-        <a href="#blog"><span>04</span>ブログ</a>
-        <a href="#about"><span>05</span>プロフィール</a>
-      </nav>
+      <nav class="home-section-nav" aria-label="トップページ内メニュー"><a class="home-primary" href="#mobile"><span>01</span>モバイルアプリ</a><a class="home-primary" href="#browser"><span>02</span>ブラウザアプリ</a><a class="home-primary" href="#console"><span>03</span>コンソール</a><a href="#updates">アップデート</a><a href="#blog">ブログ</a><a href="#about">プロフィール</a></nav>
       <section class="release-showcase" aria-labelledby="release-showcase-title">
         <div class="release-intro"><p class="eyebrow">Featured release</p><h2 id="release-showcase-title">現在公開中のアプリ</h2><p>日々の努力を記録し、積み上がる実感をつくる習慣化サポートアプリです。</p><div class="hero-actions"><a class="button primary" href="apps/tsumiage/">詳しく見る <span aria-hidden="true">↗</span></a><a class="button ghost" href="https://play.google.com/store/apps/details?id=space.manus.tsumage.app.t20251223162223" target="_blank" rel="noreferrer">Google Play</a></div></div>
         <a class="app-feature" href="apps/tsumiage/" aria-label="積み上げアプリの紹介を見る">
@@ -47,30 +39,25 @@
           <div class="feature-bottom"><span>アプリの詳しい紹介を見る</span><span class="circle-arrow" aria-hidden="true">↗</span></div>
         </a>
       </section>
-      <section class="section" id="apps" aria-labelledby="apps-title">
-        <div class="section-heading"><div><a class="section-link" href="apps/">01 / Applications <span aria-hidden="true">↗</span></a><h2 id="apps-title">日々に、ひとつの工夫。</h2></div><p>暮らしの中で使いたいものを、少しずつ。</p></div>
-        <div class="card-grid compact-grid" id="apps-list"></div>
-      </section>
-      <section class="section game-section" id="games" aria-labelledby="games-title">
-        <div class="section-heading"><div><a class="section-link" href="games/">02 / Games <span aria-hidden="true">↗</span></a><h2 id="games-title">ゲーム</h2></div><p>ブラウザで、今すぐひと遊び。</p></div>
-        <div class="card-grid featured-grid" id="games-list"></div>
-      </section>
+      <section class="section platform-section" id="mobile" aria-labelledby="mobile-title"><div class="section-heading"><div><a class="section-link" href="mobile/">01 / Mobile apps <span aria-hidden="true">↗</span></a><h2 id="mobile-title">モバイルアプリ</h2></div><p>ポケットに、毎日の小さな工夫。</p></div><div class="card-grid compact-grid" id="mobile-list"></div><a class="platform-all-link" href="mobile/">モバイルアプリの一覧を見る →</a></section>
+      <section class="section platform-section" id="browser" aria-labelledby="browser-title"><div class="section-heading"><div><a class="section-link" href="browser/">02 / Browser apps <span aria-hidden="true">↗</span></a><h2 id="browser-title">ブラウザアプリ</h2></div><p>ひらくだけで、すぐに使える。</p></div><div class="card-grid compact-grid" id="browser-list"></div><a class="platform-all-link" href="browser/">ブラウザアプリの一覧を見る →</a></section>
+      <section class="section platform-section" id="console" aria-labelledby="console-title"><div class="section-heading"><div><a class="section-link" href="console/">03 / Console <span aria-hidden="true">↗</span></a><h2 id="console-title">コンソール</h2></div><p>じっくり遊ぶ、次の楽しみ。</p></div><div class="card-grid compact-grid" id="console-list"></div><a class="platform-all-link" href="console/">コンソールの一覧を見る →</a></section>
       <section class="section" id="updates" aria-labelledby="updates-title">
-        <div class="section-heading"><div><a class="section-link" href="updates/">03 / Updates <span aria-hidden="true">↗</span></a><h2 id="updates-title">アップデート</h2></div><p>新しい公開と、小さなアップデート。</p></div>
+        <div class="section-heading"><div><a class="section-link" href="updates/">04 / Updates <span aria-hidden="true">↗</span></a><h2 id="updates-title">アップデート</h2></div><p>新しい公開と、小さなアップデート。</p></div>
         <div class="timeline" id="news-list"></div>
       </section>
       <section class="section blog-section" id="blog" aria-labelledby="blog-title">
-        <div class="section-heading"><div><a class="section-link" href="blog/">04 / Blog <span aria-hidden="true">↗</span></a><h2 id="blog-title">ブログ</h2></div><p>作ったもの、変えたことを紹介します。</p></div>
+        <div class="section-heading"><div><a class="section-link" href="blog/">05 / Blog <span aria-hidden="true">↗</span></a><h2 id="blog-title">ブログ</h2></div><p>作ったもの、変えたことを紹介します。</p></div>
         <div class="blog-list" id="blog-list"></div>
       </section>
       <section class="section about" id="about" aria-labelledby="about-title">
-        <div><a class="section-link light" href="profile/">05 / Profile <span aria-hidden="true">↗</span></a><h2 id="about-title">思いついたら、<br />つくってみる。</h2></div>
+        <div><a class="section-link light" href="profile/">06 / Profile <span aria-hidden="true">↗</span></a><h2 id="about-title">思いついたら、<br />つくってみる。</h2></div>
         <div class="about-copy"><p>SoloCreateは、個人でゲームやアプリを制作・公開しています。遊ぶ楽しさや、日々のちょっとした便利を形にしながら、少しずつ作品を育てています。</p><a class="button ghost" href="profile/">プロフィールを見る <span aria-hidden="true">↗</span></a></div>
       </section>
       <noscript><p class="section">作品一覧の表示にはJavaScriptが必要です。ゲームは公開準備中です。<a href="apps/tsumiage/">積み上げアプリの紹介</a>はこちらから開けます。</p></noscript>
     </main>
     <footer class="site-footer"><a class="brand" href="#top">SoloCreate<span class="footer-dot" aria-hidden="true">.</span></a><p>&copy; <span id="year"></span> SoloCreate</p><a href="#top">ページの先頭へ ↑</a></footer>
-    <script src="assets/js/content.js?v=20260921-void-bloom"></script>
-    <script src="assets/js/main.js?v=20260915-1"></script>
+    <script src="assets/js/content.js?v=20260921-1"></script>
+    <script src="assets/js/main.js?v=20260921-1"></script>
   </body>
 </html>
