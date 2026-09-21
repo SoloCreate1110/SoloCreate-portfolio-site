@@ -38,7 +38,7 @@ function weaponStats(i,l){
     case 0:return {count:evolved?5:l>=3?3:l>=2?2:1,interval:evolved?.12:.32-l*.035,damage:evolved?5:1.5+l*.5,pierce:evolved};
     case 1:return {count:evolved?13:3+l,interval:evolved?.45:.95-l*.09,damage:evolved?5:2+l*.5,pierce:evolved};
     case 2:return {count:evolved?3:1,interval:evolved?.75:1.9-l*.15,damage:evolved?35:10+l*5,width:evolved?40:8+l*4,pierce:true};
-    case 3:return {count:evolved?8:l+1,interval:evolved?.65:1.6-l*.1,damage:evolved?19:6+l*2,pierce:false};
+    case 3:return {count:evolved?8:l+1,interval:evolved?.65:1.6-l*.1,damage:evolved?4:1+l*.5,pierce:false};
     case 4:return {count:evolved?18:l+2,interval:evolved?.75:2.2-l*.16,damage:evolved?25:5+l*3,pierce:false};
     case 5:return {count:evolved?6:Math.min(4,l+1),interval:evolved?.17:.5-l*.04,damage:evolved?6:2+l,pierce:evolved};
     default:return null;
