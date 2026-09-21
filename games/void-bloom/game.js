@@ -199,9 +199,9 @@ function updateHazards(dt){
       shake=Math.max(shake,reduced?0:5);
     }
     if(h.phase==='active'){
-      const inside=h.type==='whiteZone'?ship.x+8>h.x&&ship.x-8<h.x+h.width&&ship.y+8>h.y&&ship.y-8<h.y+h.height:h.type==='bomb'?Math.hypot(ship.x-h.x,ship.y-h.y)<h.r+8:segmentDistance(ship.x,ship.y,h.x,h.y,h.tx,h.ty)<h.width/2+8;
+      const inside=h.type==='whiteZone'?(h.shape==='circle'?Math.hypot(ship.x-h.x,ship.y-h.y)<h.r+8:ship.x+8>h.x&&ship.x-8<h.x+h.width&&ship.y+8>h.y&&ship.y-8<h.y+h.height):h.type==='bomb'?Math.hypot(ship.x-h.x,ship.y-h.y)<h.r+8:segmentDistance(ship.x,ship.y,h.x,h.y,h.tx,h.ty)<h.width/2+8;
       if(inside&&!h.hit){hurt(h.damage,h.type==='whiteZone'?'white':h.type==='bomb'?'red':h.kind||'purple');h.hit=true;}
-      if(h.remaining<=0){h.dead=true;if(h.type==='whiteZone'){h.owner.whiteCharge=0;h.owner.fire=Math.max(h.owner.fire,1);}else{h.owner.phase='ready';h.owner.fire=h.type==='bomb'?3.2:3;}}
+      if(h.remaining<=0){h.dead=true;if(h.type==='whiteZone'){h.owner.whiteCharge=0;h.owner.fire=h.owner.bossWave===8?.6:Math.max(h.owner.fire,1);}else{h.owner.phase='ready';h.owner.fire=h.owner.bossWave===8?.6:h.type==='bomb'?3.2:3;}}
     }
   }
   compact(hazards,h=>!h.dead);
@@ -255,6 +255,12 @@ function updateBoss(e,dt){
   else e.x=240+Math.sin(e.t*(phase===2?.8:.48))*(phase===2?100:70);
   updateBossWhite(e,dt);
   const busy=hazards.some(h=>h.owner===e&&!h.dead);
+  // Sparse covering fire during the readable part of a telegraph; pause near impact.
+  if(stage===8&&busy){
+    e.coverFire=(e.coverFire??.8)-dt;
+    const warning=hazards.some(h=>h.owner===e&&!h.dead&&h.phase==='warning'&&h.remaining>.7);
+    if(warning&&e.coverFire<=0){for(const side of [-1,1]){const x=e.x+side*78,y=e.y+30;bossShot(e,x,y,Math.atan2(ship.y-y,ship.x-x),145,'red');}e.coverFire=1.25;}
+  }else e.coverFire=.8;
   e.attackLabel=busy?(e.whiteHazard&&!e.whiteHazard.dead?'DANGER · 退避':stage===8?'SIEGE · 爆撃予告':'PRISM · レーザー予告'):stage===8?'TWIN BATTERY':stage===12?(phase===2?'SERAPH · 六翼':'SERAPH · 四翼'):'DREADNOUGHT';
   if(e.fire<=0&&e.y>90&&!busy){
     e.salvos++;
@@ -276,7 +282,7 @@ function updateBoss(e,dt){
       }
       // Rare three-shot purple salvo marks this cycle's heavy artillery.
       if(e.salvos%8===0)for(let j=-1;j<=1;j++)bossShot(e,e.x,e.y+35,Math.PI/2+j*.27,150,'purple');
-      e.fire=1.65;
+      e.fire=1.05;
     }else{
       if(e.salvos%4===0){
         const target=clamp(ship.x,85,395);
@@ -312,7 +318,7 @@ function drawUniqueBoss(e){
   ctx.restore();ctx.shadowBlur=0;ctx.fillStyle=c;ctx.font='8px monospace';ctx.textAlign='center';if(stage===8)ctx.fillText(e.attackLabel||BOSS_NAMES[stage],0,65);
 }
 
-// Rare white attacks mark a fixed, wide danger lane instead of firing a projectile.
+// Rare white attacks use large fixed telegraphs: siege blast or orbital laser.
 function updateBossWhite(e,dt){
   if(wave<8||e.y<90||hazards.some(h=>h.owner===e&&h.type!=='whiteZone'&&!h.dead))return;
   if(e.whiteHazard&&!e.whiteHazard.dead){e.whiteCharge=e.whiteHazard.phase==='warning'?e.whiteHazard.remaining:0;return;}
@@ -320,6 +326,7 @@ function updateBossWhite(e,dt){
   if(e.whiteClock>0)return;
   const width=wave===12?200:170;
   const h={type:'whiteZone',owner:e,x:clamp(ship.x-width/2,18,W-width-18),y:180,width,height:H-180,remaining:3,total:3,phase:'warning',hit:false,damage:MAX_HP};
+  if(wave===8)Object.assign(h,{shape:'circle',x:clamp(ship.x,100,W-100),y:clamp(ship.y,H*.72+55,H-85),r:82});
   hazards.push(h);e.whiteHazard=h;e.whiteCharge=3;e.whiteClock=20;
   toast('DANGER — 白い範囲から退避','#ffffff');tone(420,.25,'sine',.06,-100);
 }
@@ -363,6 +370,13 @@ function drawHazards(){
   for(const h of hazards){
     if(h.owner.hp<=0)continue;
     ctx.save();const warning=h.phase==='warning',c=h.type==='bomb'||h.kind==='red'?'#ff637f':'#da94ff';
+    if(h.type==='whiteZone'&&h.shape==='circle'){
+      ctx.shadowBlur=0;ctx.fillStyle=warning?'rgba(255,255,255,.10)':'rgba(255,255,255,.92)';ctx.strokeStyle='#ffffff';ctx.lineWidth=3;
+      ctx.beginPath();ctx.arc(h.x,h.y,h.r,0,Math.PI*2);ctx.fill();ctx.stroke();
+      if(warning){ctx.setLineDash([8,6]);ctx.beginPath();ctx.arc(h.x,h.y,h.r+6,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.lineWidth=4;ctx.beginPath();ctx.arc(h.x,h.y,h.r-7,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(h.remaining/h.total,0,1));ctx.stroke();}
+      ctx.fillStyle='#080e18';ctx.fillRect(h.x-68,h.y-27,136,60);ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.font='bold 17px monospace';ctx.fillText('DANGER · BLAST',h.x,h.y-7);ctx.font='bold 12px sans-serif';ctx.fillText('HP全損 · '+(warning?Math.max(0,h.remaining).toFixed(1)+'s':'発動中'),h.x,h.y+16);
+      ctx.restore();continue;
+    }
     if(h.type==='whiteZone'){
       ctx.shadowBlur=0;ctx.fillStyle=warning?'rgba(255,255,255,.10)':'rgba(255,255,255,.86)';ctx.fillRect(h.x,h.y,h.width,h.height);
       ctx.save();ctx.beginPath();ctx.rect(h.x,h.y,h.width,h.height);ctx.clip();ctx.strokeStyle=warning?'#ffffff40':'#ffffff';ctx.lineWidth=warning?2:5;
