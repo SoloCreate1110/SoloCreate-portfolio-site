@@ -15,3 +15,5 @@
 .revive-heart{color:#ff86ad;font:700 16px monospace;white-space:nowrap;text-shadow:0 0 10px #ff86ad55}.revive-heart.spent{color:#687387;text-shadow:none}.combat-legend .danger-dot.white{background:#fff;box-shadow:0 0 7px #ffffff99}
 
 .skills-panel{margin:18px 0;padding:12px 0;border-top:1px solid var(--line)}#skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}#skills>span{font-size:10px;line-height:1.6;padding:4px 6px;background:#12212e;border:1px solid #284151;border-radius:4px;color:#a8cbe2}#skills b{color:#8ecfff;margin-left:4px}#skills .empty-skills{border:0;background:none;color:var(--muted);padding:0}
+
+.upgrade-actions{display:flex;gap:8px;width:100%;flex-shrink:0;margin:0 0 10px}.upgrade-actions button{flex:1;font-size:11px;padding:7px 4px;min-height:34px}.upgrade-actions button:disabled{opacity:.35;cursor:default}.banishing .choice{border-color:#ff809c}.banishing>p{color:#ffafc4}.banishing #banish{border-color:#ff809c;color:#ffafc4}
