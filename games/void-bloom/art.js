@@ -55,8 +55,8 @@ window.VoidArt=(()=>{
   let background=null,backgroundEarth=null;
   art.background=(ctx,t)=>{if(!background||backgroundEarth!==art.earth){background=document.createElement('canvas');background.width=480;background.height=720;paintBackground(background.getContext('2d'),t);backgroundEarth=art.earth;}ctx.drawImage(background,0,0);};
   art.mothership=(ctx,t)=>{
-    if(art.carrier){ctx.save();ctx.shadowBlur=0;ctx.globalAlpha=.82;ctx.imageSmoothingEnabled=false;ctx.drawImage(art.carrier,140,665,200,56);ctx.restore();return;}
-    ctx.save();ctx.translate(240,690);ctx.shadowBlur=0;
+    if(art.carrier){ctx.save();ctx.shadowBlur=0;ctx.globalAlpha=.82;ctx.imageSmoothingEnabled=false;ctx.drawImage(art.carrier,140,650,200,56);ctx.restore();return;}
+    ctx.save();ctx.translate(240,675);ctx.shadowBlur=0;
     const aura=ctx.createRadialGradient(0,0,2,0,0,110);aura.addColorStop(0,'#6bceff24');aura.addColorStop(1,'#6bceff00');ctx.fillStyle=aura;ctx.fillRect(-115,-50,230,80);
     ctx.fillStyle='#101e32';ctx.strokeStyle='#6f92ae';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-101,9);ctx.lineTo(-78,-5);ctx.lineTo(-39,-8);ctx.lineTo(-23,-26);ctx.lineTo(23,-26);ctx.lineTo(39,-8);ctx.lineTo(78,-5);ctx.lineTo(101,9);ctx.lineTo(55,24);ctx.lineTo(-55,24);ctx.closePath();ctx.fill();ctx.stroke();
     ctx.fillStyle='#2b425d';ctx.fillRect(-58,0,116,12);ctx.fillStyle='#132437';ctx.fillRect(-25,-19,50,40);ctx.strokeStyle='#94bad3';ctx.strokeRect(-25,-19,50,40);
@@ -66,7 +66,7 @@ window.VoidArt=(()=>{
   };
   art.tether=(ctx,x,y,t)=>{
     ctx.save();ctx.shadowBlur=0;ctx.lineCap='round';const bend=Math.sin(t*1.4)*12;
-    const path=()=>{ctx.beginPath();ctx.moveTo(245,704);ctx.bezierCurveTo(240+bend,651,x+25+bend,y+55,x,y+10);};
+    const path=()=>{ctx.beginPath();ctx.moveTo(245,689);ctx.bezierCurveTo(240+bend,651,x+25+bend,y+55,x,y+10);};
     path();ctx.strokeStyle='#050b13';ctx.lineWidth=6;ctx.stroke();path();ctx.strokeStyle='#7197ad';ctx.lineWidth=3;ctx.stroke();path();ctx.strokeStyle='#86e9ff';ctx.lineWidth=1;ctx.setLineDash([3,10]);ctx.lineDashOffset=-t*12;ctx.stroke();ctx.setLineDash([]);ctx.restore();
   };
   art.heroSprite=(ctx,x,y,t,inv,focus,motion=0)=>{

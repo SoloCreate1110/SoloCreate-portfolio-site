@@ -25,7 +25,7 @@ window.siteContent = {
   // ゲームは tags に「ゲーム」、platform に mobile / browser / console を指定します。
   games: [
     {
-      title: "VOID BLOOM",
+      title: "ローグインベーダー",
       status: "ブラウザで公開中",
       description:
         "インベーダー×ローグライク。経験値で3択の強化を選び、6種類の武器を進化させながら全12ウェーブとボスに挑むシューティングゲームです。",
@@ -40,7 +40,7 @@ window.siteContent = {
   news: [
     {
       date: "2026-09-21",
-      title: "ブラウザゲーム「VOID BLOOM」を公開",
+      title: "ブラウザゲーム「ローグインベーダー」を公開",
       body: "武器を進化させて戦うインベーダー×ローグライクを公開しました。PC・スマートフォンのブラウザで遊べます。",
     },
     {
