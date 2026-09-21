@@ -29,7 +29,15 @@ window.VoidArt=(()=>{
     art.poses=[94,326,554,788,1022].map(x=>crop(sheet,x,158,164,326));
     art.hero=art.poses[2];
     art.carrier=crop(sheet,40,556,894,249);
-    art.earth=crop(sheet,23,912,1208,318);
+    // Include the entire atmospheric rim; the atlas cable above it is not part of Earth.
+    art.earth=crop(sheet,23,890,1208,340);
+    const earthContext=art.earth.getContext('2d'),earthFrame=earthContext.getImageData(0,0,1208,340),pixels=earthFrame.data;
+    for(let col=0;col<1208;col++)for(let row=0;row<340;row++){
+      const i=(row*1208+col)*4,r=pixels[i],g=pixels[i+1],b=pixels[i+2];
+      if(pixels[i+3]&&b>140&&b>r*1.3&&g>r*1.25&&b>g*.9)break;
+      pixels[i+3]=0;
+    }
+    earthContext.putImageData(earthFrame,0,0);
     portrait();
     art.poses=art.poses.map(source=>{const c=document.createElement('canvas');c.width=36;c.height=72;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(source,0,0,36,72);return c;});
     const c=document.createElement('canvas');c.width=200;c.height=56;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(art.carrier,0,0,200,56);art.carrier=c;
@@ -38,7 +46,7 @@ window.VoidArt=(()=>{
     ctx.save();ctx.shadowBlur=0;
     const mist=ctx.createRadialGradient(360,220,5,250,340,420);mist.addColorStop(0,'#17395655');mist.addColorStop(.5,'#1d163326');mist.addColorStop(1,'#02070e00');ctx.fillStyle=mist;ctx.fillRect(0,0,480,720);
     // Planet rises past the lower edge, leaving the combat field unobstructed.
-    if(art.earth){ctx.globalAlpha=.72;ctx.drawImage(art.earth,-70,565,620,164);ctx.globalAlpha=1;}
+    if(art.earth){ctx.globalAlpha=.72;ctx.drawImage(art.earth,-70,553.7,620,174.5);ctx.globalAlpha=1;}
     else{const earth=ctx.createRadialGradient(240,910,200,240,910,355);earth.addColorStop(0,'#10233d');earth.addColorStop(.9,'#175484');earth.addColorStop(1,'#60cfff');ctx.fillStyle=earth;ctx.beginPath();ctx.arc(240,910,355,0,Math.PI*2);ctx.fill();}
     const shade=ctx.createLinearGradient(0,545,0,720);shade.addColorStop(0,'#03091600');shade.addColorStop(.4,'#03091644');shade.addColorStop(1,'#030916b8');ctx.fillStyle=shade;ctx.fillRect(0,530,480,190);
     
