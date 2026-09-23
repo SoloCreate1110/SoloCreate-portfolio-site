@@ -81,7 +81,7 @@ function showBossReward(){state='reward';const pool=relics.filter(r=>!hasRelic(r
 function pickReward(i){if(state!=='reward'||!rewardChoices[i])return;runRelics.push(rewardChoices[i].id);ship.hp=Math.min(ship.hp,maxHp());bossRewardPending=false;advanceWave();}
 function recordWave(){runLog.push({type:'wave-end',wave,stage:stages[Math.floor((wave-1)/4)].name,event:waveVariant,seconds:+waveTime.toFixed(2),level,hp:+ship.hp.toFixed(1),hits:runHits,weapons:levels.slice(),branches:branches.slice(),damage:weaponTotals.map(t=>Math.round(t.damage)),kills:weaponTotals.map(t=>t.kills),relics:runRelics.slice()});}
 function advanceWave(){if(wave===12){finish(true);return;}wave++;waveTime=0;spawned=0;spawnClock=.8;transition=0;clearOrange();ship.hp=Math.min(maxHp(),ship.hp+5);waveVariant=wave%4===0||wave<3?'normal':['normal','swarm','rush'][Math.floor(Math.random()*3)];$('overlay').innerHTML='';$('overlay').className='overlay';state='playing';const stage=stages[Math.floor((wave-1)/4)];hud('sector','textContent',stage.name);toast('WAVE '+String(wave).padStart(2,'0')+' — '+(wave%4===0?'BOSS':waveVariant==='rush'?'突進群':waveVariant==='swarm'?'小型群襲来':stage.name),stage.color);arsenal();ui();levelUp();}
-function balanceRecord(){return{version:28,startedAt:runStartedAt,hero:heroes[selectedHero].name,state,seconds:+time.toFixed(2),wave,level,hits:runHits,score,weaponTotals:weaponTotals.map((t,i)=>({name:weapons[i].name,level:levels[i],branch:branches[i],damage:Math.round(t.damage),kills:t.kills})),relics:runRelics.slice(),waves:runLog.slice()};}
+function balanceRecord(){return{version:29,startedAt:runStartedAt,hero:heroes[selectedHero].name,state,seconds:+time.toFixed(2),wave,level,hits:runHits,score,weaponTotals:weaponTotals.map((t,i)=>({name:weapons[i].name,level:levels[i],branch:branches[i],damage:Math.round(t.damage),kills:t.kills})),relics:runRelics.slice(),waves:runLog.slice()};}
 function exportRecord(){const url=URL.createObjectURL(new Blob([JSON.stringify(balanceRecord(),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='rogue-invader-balance.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function resultDetails(){return '<h3>武器別の活躍</h3>'+weaponTotals.map((t,i)=>levels[i]?`<div class="result-weapon"><span>${levels[i]===5?evolvedName(i):weapons[i].name}</span><b>${Math.round(t.damage).toLocaleString()} dmg / ${t.kills}撃破</b></div>`:'').join('')+'<p>ダメージは敵の残りHPまで集計。連携分は攻撃元の武器に加算。</p><button id="exportLog">開発記録を保存</button><button id="resultTitle">キャラ選択へ戻る</button>';}
 function runnerMove(e,dt){if(e.flight==='zigzag'){e.y+=e.v*dt;e.x=clamp(e.originX+Math.sin(e.t*2.6)*48,25,W-25);return;}if(e.flight==='charger'){if(!e.dive){e.y+=e.v*.6*dt;if(e.y>=260){e.dive={wait:1,x:ship.x,y:ship.y};}}else if(e.dive.wait>0){e.dive.wait-=dt;if(e.dive.wait<=0){const a=Math.atan2(e.dive.y-e.y,e.dive.x-e.x);e.dive.vx=Math.cos(a)*240;e.dive.vy=Math.sin(a)*240;}}else{e.x+=e.dive.vx*dt;e.y+=e.dive.vy*dt;if(e.x< -30||e.x>W+30)e.hp=0;}return;}e.y+=e.v*dt;e.x+=Math.cos(e.t*1.4)*dt*(e.type===1?24:9);}
@@ -178,8 +178,8 @@ function banishChoice(n){
 }
 function renderUpgrades(){armMenu();$('overlay').className='overlay upgrades'+(banishMode?' banishing':'');$('overlay').innerHTML=`<span class="badge">LEVEL ${String(level).padStart(2,'0')} REACHED</span><h2>CHOOSE YOUR POWER</h2><p>${banishMode?'削除する候補を選択（このプレイ中は出現しません）':'強化を選択 · 1 / 2 / 3 キーでも選択'}</p><div class="upgrade-actions"><button id="reroll" ${rerolls<=0||!upgradePool().some(i=>!choices.includes(i))?'disabled':''}>↻ リロール ${rerolls}/1</button><button id="banish" ${banishes<=0?'disabled':''}>${banishMode?'削除をキャンセル':'⊘ 候補から削除 '+banishes+'/1'}</button></div><div class="upgrade-options">`+choices.map((i,n)=>{if(i>=6){const k=i-6,skill=skills[k];return `<button class="choice" data-choice="${n}" style="--c:#8ecfff"><span class="weapon-icon">${skill.icon}</span><div><span class="tag">${n+1} / SKILL LV.${skillLevels[k]} → ${skillLevels[k]+1}</span><b>${skill.name}</b><small>${skill.desc}</small></div></button>`;}if(i<0){const support=supports[-i-1];return `<button class="choice" data-choice="${n}" style="--c:#76f5c5"><span class="weapon-icon">${support.icon}</span><div><span class="tag">${n+1} / SUPPORT</span><b>${support.name}</b><small>${support.desc}</small></div></button>`};const w=weapons[i],evo=levels[i]===4;return `<button class="choice ${evo?'evolved':''}" data-choice="${n}" style="--c:${w.color}"><span class="weapon-icon">${w.icon}</span><div><span class="tag">${n+1} / ${evo?'✦ EVOLUTION':levels[i]?'LV.'+levels[i]+' → LV.'+(levels[i]+1):'NEW WEAPON'}</span><b>${evo?w.name+'：進化分岐':w.name}</b><small>${upgradeSummary(i,levels[i])}</small></div></button>`;}).join('')+'</div>';document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=menuAction(()=>choose(Number(b.dataset.choice))));bindMenu('reroll',rerollChoices);bindMenu('banish',toggleBanish);}
 function choose(n){if(state!=='upgrade'||!Number.isInteger(n)||n<0||n>=choices.length)return;if(banishMode){banishChoice(n);return;}const i=choices[n];if(i>=0&&i<6&&levels[i]===4){showEvolution(i);return;}if(i>=6){const k=i-6;if(!skills[k]||skillLevels[k]>=5)return;skillLevels[k]++;if(k===1)ship.hp=Math.min(maxHp(),ship.hp+20);if(k===0)ring(ship.x,ship.y,'#ffe65b',magnetRadius());}else if(i<0){if(i===-1)ship.hp=Math.min(maxHp(),ship.hp+25);if(i===-2)barrier=4;if(i===-3){score+=1500;clearOrange();}if(i===-4){ship.hp=Math.min(maxHp(),ship.hp+10);score+=500;}}else{if(!levels[i]&&levels.filter(Boolean).length>=MAX_WEAPONS)return;levels[i]++;if(!profile.weapons.includes(i)){profile.weapons.push(i);saveProfile();}cd[i]=0;if(levels[i]===5){flash=.7;shake=reduced?0:12;ring(ship.x,ship.y,weapons[i].color,550);burst(ship.x,ship.y,weapons[i].color,80,2);clearOrange();toast('EVOLUTION — '+weapons[i].evo,weapons[i].color);tone(330,.7,'sawtooth',.06,1000);}}state='playing';ship.inv=Math.max(ship.inv,1.5);$('overlay').innerHTML='';$('overlay').className='overlay';arsenal();ui();levelUp();}
-function enemy(x,y,type=0,boss=false){const hp=boss? (wave===12?6800:wave===4?1200:1500+wave*160):Math.round(4+wave*1.4+wave*wave*.18)+(type===2?5+wave:0);return {x,y,type,boss,hp,max:hp,bossWave:boss?wave:0,r:boss?47:16,v:rand(15,24)+wave*2,t:rand(0,6.28),fire:rand(2.5,5),hit:0,salvos:0};}
-function wavePacing(){return {rows:wave===1?5:wave<=3?4:3+Math.floor(wave/3),count:wave===1?4:wave<=3?5:5+Math.min(2,Math.floor(wave/4)),interval:(wave===1?3.6:wave===2?3.5:wave===3?3.2:2.6)*(waveVariant==='swarm'?.75:1)};}
+function enemy(x,y,type=0,boss=false){const baseHp=boss? (wave===12?9800:wave===4?1200:1500+wave*160):Math.round(4+wave*1.4+wave*wave*.18)+(type===2?5+wave:0);const hp=!boss&&wave>=9?Math.round(baseHp*1.45):baseHp;return {x,y,type,boss,hp,max:hp,bossWave:boss?wave:0,r:boss?47:16,v:rand(15,24)+wave*2,t:rand(0,6.28),fire:rand(2.5,5),hit:0,salvos:0};}
+function wavePacing(){return {rows:wave===1?5:wave<=3?4:3+Math.floor(wave/3)+(wave>=9?1:0),count:wave===1?4:wave<=3?5:5+Math.min(2,Math.floor(wave/4)),interval:(wave===1?3.6:wave===2?3.5:wave===3?3.2:wave>=9?2.15:2.6)*(waveVariant==='swarm'?.75:1)};}
 function spawn(){if(wave%4===0){if(!spawned){const boss=enemy(240,-70,3,true);enemies.push(boss);seeEnemy(boss);runLog.push({type:'boss-entry',wave,level,hp:ship.hp,weapons:levels.slice(),atSeconds:+time.toFixed(2)});spawned=1;hud('bossName','textContent',BOSS_NAMES[wave]);toast('WARNING — '+BOSS_NAMES[wave],'#ff94bd');$('bossHud').hidden=false;}return;}const {rows,count}=wavePacing();if(spawned>=rows)return;for(let i=0;i<count;i++){
   if(wave>=5&&spawned===1&&i===Math.floor(count/2))enemies.push(specialEnemy('warper'));
   else if(wave>=6&&spawned===2&&i===Math.floor(count/2))enemies.push(specialEnemy('sniper'));
@@ -193,8 +193,8 @@ function spawn(){if(wave%4===0){if(!spawned){const boss=enemy(240,-70,3,true);en
     const x=wave===1?100+i*(280/(count-1))+(spawned%2?12:-12):65+i*(350/(count-1));
     const e=enemy(x,-35-spawned%2*14,type);e.canShoot=shooter;e.runner=!shooter;e.purpleCaster=purpleCaster;
     if(wave<=3)e.hp=e.max=wave===1?3:wave===2?5:7+(type===2?2:0);
-    if(e.runner){e.v=(wave<=3?34:40)+wave*2;if(wave>=3){const chance=waveVariant==='rush'?1:wave>=9?.7:wave>=5?.45:.2;if(Math.random()<chance){e.flight=wave>=5&&Math.random()<.5?'charger':'zigzag';e.originX=e.x;}}if(waveVariant==='swarm'){e.hp=e.max=Math.max(2,Math.round(e.hp*.65));e.v*=1.3;}}
-    if(shooter&&wave<=3)e.fire=5+i*.7;
+    if(e.runner){e.v=((wave<=3?34:40)+wave*2)*(wave>=9?1.15:1);if(wave>=3){const chance=waveVariant==='rush'?1:wave>=9?.7:wave>=5?.45:.2;if(Math.random()<chance){e.flight=wave>=5&&Math.random()<.5?'charger':'zigzag';e.originX=e.x;}}if(waveVariant==='swarm'){e.hp=e.max=Math.max(2,Math.round(e.hp*.65));e.v*=1.3;}}
+    if(shooter&&wave<=3)e.fire=5+i*.7;else if(shooter&&wave>=9)e.fire*=.8;
     enemies.push(e);
   }
 }for(const e of enemies)seeEnemy(e);spawned++;}
@@ -302,6 +302,7 @@ function bossShot(e,x,y,angle,speed,kind='red'){
 function bossTelegraph(e,type,x,y,tx,ty){
   const h={type,owner:e,x,y,remaining:type==='bomb'?2.4:2.2,total:type==='bomb'?2.4:2.2,phase:'warning',hit:false,damage:type==='bomb'?30:34,kind:'red'};
   if(type==='bomb')h.r=48;else Object.assign(h,{tx,ty,width:22});
+  if(type==='laser'&&e.bossWave===12){const enraged=e.hp<=e.max*.5;h.remaining=h.total=enraged?1.65:2;h.width=enraged?26:22;h.damage=enraged?40:34;}
   hazards.push(h);
 }
 function updateBoss(e,dt){
@@ -320,6 +321,10 @@ function updateBoss(e,dt){
     e.coverFire=(e.coverFire??.8)-dt;
     const warning=hazards.some(h=>h.owner===e&&!h.dead&&h.phase==='warning'&&h.remaining>.7);
     if(warning&&e.coverFire<=0){for(const side of [-1,1]){const x=e.x+side*78,y=e.y+30;bossShot(e,x,y,Math.atan2(ship.y-y,ship.x-x),145,'red');}e.coverFire=1.25;}
+  }else if(stage===12&&phase===2&&busy){
+    e.coverFire=(e.coverFire??.8)-dt;
+    const warning=hazards.some(h=>h.owner===e&&!h.dead&&h.type==='laser'&&h.phase==='warning'&&h.remaining>.65);
+    if(warning&&e.coverFire<=0){const aim=Math.atan2(ship.y-e.y,ship.x-e.x);for(let j=-1;j<=1;j++)bossShot(e,e.x,e.y+30,aim+j*.22,175,'red');e.coverFire=1;}
   }else e.coverFire=.8;
   e.attackLabel=busy?(e.whiteHazard&&!e.whiteHazard.dead?'DANGER · 退避':stage===8?'SIEGE · 爆撃予告':'PRISM · レーザー予告'):stage===8?'TWIN BATTERY':stage===12?(phase===2?'SERAPH · 六翼':'SERAPH · 四翼'):'DREADNOUGHT';
   if(e.fire<=0&&e.y>90&&!busy){
@@ -344,18 +349,20 @@ function updateBoss(e,dt){
       if(e.salvos%8===0)for(let j=-1;j<=1;j++)bossShot(e,e.x,e.y+35,Math.PI/2+j*.27,150,'purple');
       e.fire=1.05;
     }else{
-      if(e.salvos%4===0){
-        const target=clamp(ship.x,85,395);
-        for(const side of [-1,1])bossTelegraph(e,'laser',e.x+side*58,e.y+20,clamp(target+side*70,25,455),745);
+      if(e.salvos%(phase===2?2:3)===0){
+        const count=phase===2?4:3,spacing=phase===2?120:140;
+        const offset=clamp(ship.x-240,-1,1)*(phase===2?22:30);
+        for(let j=0;j<count;j++){const x=240+(j-(count-1)/2)*spacing+offset;bossTelegraph(e,'laser',x,e.y+20,x,745);}
+        bossShot(e,e.x,e.y+30,Math.atan2(ship.y-e.y,ship.x-e.x),180,'orange');
         toast('SERAPH — プリズム照射','#eea2ff');
       }else{
         // A rotating broken halo: broad angular gaps stay visible between petals.
-        const count=phase===2?22:18,spin=e.salvos*.31;
-        for(let j=0;j<count;j++){const a=j/count*Math.PI*2+spin;if(Math.abs(Math.atan2(Math.sin(a-Math.PI/2),Math.cos(a-Math.PI/2)))<.22)continue;bossShot(e,e.x+Math.cos(a)*45,e.y+Math.sin(a)*45,a,phase===2?185:155,j%7===0?'orange':'red');}
-        if(phase===2)for(let j=-1;j<=1;j++)bossShot(e,e.x,e.y+30,Math.atan2(ship.y-e.y,ship.x-e.x)+j*.17,205,'red');
+        const count=phase===2?28:22,spin=e.salvos*.31;let orangeSent=false;
+        for(let j=0;j<count;j++){const a=j/count*Math.PI*2+spin;if(Math.abs(Math.atan2(Math.sin(a-Math.PI/2),Math.cos(a-Math.PI/2)))<.22)continue;bossShot(e,e.x+Math.cos(a)*45,e.y+Math.sin(a)*45,a,phase===2?215:185,orangeSent?'red':'orange');orangeSent=true;}
+        if(phase===2)for(let j=-2;j<=2;j++)bossShot(e,e.x,e.y+30,Math.atan2(ship.y-e.y,ship.x-e.x)+j*.19,245,'red');
       }
       if(e.salvos%8===0)for(let j=-1;j<=1;j++)bossShot(e,e.x,e.y+35,Math.PI/2+j*.32,155,'purple');
-      e.fire=phase===2?1.05:1.35;
+      e.fire=phase===2?.72:1.05;
     }
   }
   hud('bossLife','width',Math.max(0,e.hp/e.max*100)+'%');
@@ -393,7 +400,7 @@ function updateBossWhite(e,dt){
 function hurt(amount=12+wave,kind='orange'){if(ship.inv>0||(barrier>0&&kind==='orange')||state!=='playing')return;runHits++;ship.hp=kind==='white'?0:Math.max(0,ship.hp-amount*(hasRelic('salvage')?1.2:1)*(kind==='orange'?1-skillLevels[5]*.08:1));ship.inv=hasRelic('pulse')?.8:1.1;if(hasRelic('pulse')){ring(ship.x,ship.y,'#87dfff',160);for(const e of enemies)if(Math.hypot(e.x-ship.x,e.y-ship.y)<160)damage(e,80,'#87dfff');}shake=reduced?0:12;flash=.2;burst(ship.x,ship.y,'#ff698e',25);tone(110,.3,'sawtooth',.06,-70);if(ship.hp<=0&&ship.hearts>0){ship.hearts--;ship.hp=maxHp();ship.inv=3;ring(ship.x,ship.y,'#ff86ad',140);burst(ship.x,ship.y,'#ff86ad',40);toast('REVIVE — HP FULL · 3秒間無敵','#ffb5cd');tone(660,.5,'sine',.08,300);}ui();if(ship.hp<=0)finish(false);}
 function update(dt){visualTime+=dt;for(const s of stars){s.y+=(state==='playing'?28:9)*s.z*dt;if(s.y>H){s.y=0;s.x=rand(0,W);}}if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show');}if(state!=='playing')return;time+=dt;waveTime+=dt;ship.inv-=dt;barrier=Math.max(0,barrier-dt);shieldCd=Math.max(0,shieldCd-dt);const movementSpeed=300*(1+skillLevels[4]*.08)*heroes[selectedHero].speed*(isFocused()?.5:1);shake=Math.max(0,shake-dt*30);flash=Math.max(0,flash-dt);let dx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0),dy=(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0);if(dx||dy){const norm=Math.hypot(dx,dy);ship.x+=dx/norm*movementSpeed*dt;ship.y+=dy/norm*movementSpeed*dt;}if(pointer){const px=pointer.x-ship.x,py=pointer.y-ship.y,distance=Math.hypot(px,py),step=Math.min(distance,movementSpeed*dt);ship.x+=px/(distance||1)*step;ship.y+=py/(distance||1)*step;}ship.x=clamp(ship.x,22,W-22);ship.y=clamp(ship.y,FLIGHT_TOP,FLIGHT_BOTTOM);
 regenClock+=dt;if(regenClock>=5){regenClock=0;if(hasRelic('repair'))ship.hp=Math.min(maxHp(),ship.hp+3);}spawnClock-=dt;if(spawnClock<=0){spawn();spawnClock=wavePacing().interval;}shoot(dt);
-for(const e of enemies){if(e.hp<=0)continue;e.t+=dt;e.hit-=dt;e.fire-=dt;if(e.role){updateSpecial(e,dt);continue;}if(e.boss){updateBoss(e,dt);}else{runnerMove(e,dt);if(e.canShoot!==false&&e.fire<=0&&e.y>80&&e.y<510&&time>7){const aim=Math.atan2(ship.y-e.y,ship.x-e.x);const count=e.type===2&&wave>=3?3:1;e.salvos++;for(let j=0;j<count;j++){const a=aim+(j-(count-1)/2)*.18;hostile.push({x:e.x,y:e.y+15,vx:Math.cos(a)*(105+wave*5),vy:Math.sin(a)*(105+wave*5),r:5,dmg:10+wave+e.type*2,kind:e.purpleCaster&&e.salvos%3===0&&j===Math.floor(count/2)?'purple':wave<=2||e.salvos%4===0?'orange':'red'});}e.fire=wave<=3?rand(5,6.5):rand(2.5,4.5)/(1+wave*.055);}if(e.y>H-10){e.hp=0;if(!e.runner)hurt(15+wave);}}if(Math.hypot(e.x-ship.x,e.y-ship.y)<e.r+13){hurt(22+wave);if(!e.boss)damage(e,999,'#ff698e');}}
+for(const e of enemies){if(e.hp<=0)continue;e.t+=dt;e.hit-=dt;e.fire-=dt;if(e.role){updateSpecial(e,dt);continue;}if(e.boss){updateBoss(e,dt);}else{runnerMove(e,dt);if(e.canShoot!==false&&e.fire<=0&&e.y>80&&e.y<510&&time>7){const aim=Math.atan2(ship.y-e.y,ship.x-e.x);const count=e.type===2&&wave>=3?3:1;e.salvos++;for(let j=0;j<count;j++){const a=aim+(j-(count-1)/2)*.18;hostile.push({x:e.x,y:e.y+15,vx:Math.cos(a)*((105+wave*5)*(wave>=9?1.18:1)),vy:Math.sin(a)*((105+wave*5)*(wave>=9?1.18:1)),r:5,dmg:10+wave+e.type*2,kind:e.purpleCaster&&e.salvos%3===0&&j===Math.floor(count/2)?'purple':wave<=2||e.salvos%4===0?'orange':'red'});}e.fire=wave<=3?rand(5,6.5):rand(2.5,4.5)/(1+wave*.055)*(wave>=9?.8:1);}if(e.y>H-10){e.hp=0;if(!e.runner)hurt(15+wave);}}if(Math.hypot(e.x-ship.x,e.y-ship.y)<e.r+13){hurt(22+wave);if(!e.boss)damage(e,999,'#ff698e');}}
 for(const b of hostile){b.px=b.x;b.py=b.y;b.x+=b.vx*dt;b.y+=b.vy*dt;}
 orangeShots.length=0;for(const h of hostile)if(!h.dead&&canCancel(h))orangeShots.push(h);
 const gridEnemies=bullets.length*enemies.length>1024,gridOrange=bullets.length*orangeShots.length>1024;
