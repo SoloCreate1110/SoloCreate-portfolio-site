@@ -12,9 +12,9 @@ window.VoidRender=(()=>{
   // Eight reusable brightness frames: a glint on the diamond itself, no extra symbol.
   const phase=g._glintPhase??(g._glintPhase=g.x*.07+g.y*.03);
   const frame=reduced?3:Math.round(7*((1+Math.sin(t*4.2+phase))*.5)**6);
-  blit(ctx,stamp('xp-small:'+frame,24,24,c=>{
-   const n=frame/7,color=`rgb(255,${Math.round(216+35*n)},${Math.round(74+126*n)})`;
-   glow(c,color,3+2*n);c.beginPath();c.moveTo(0,-4.5);c.lineTo(3,0);c.lineTo(0,4.5);c.lineTo(-3,0);c.closePath();c.strokeStyle='#302708';c.lineWidth=1.5;c.stroke();c.fill();
+  blit(ctx,stamp('xp-blue-small:'+frame,20,20,c=>{
+   const n=frame/7,color=`rgb(${Math.round(60+110*n)},${Math.round(160+65*n)},255)`;
+   glow(c,color,2+2*n);c.beginPath();c.moveTo(0,-3);c.lineTo(2,0);c.lineTo(0,3);c.lineTo(-2,0);c.closePath();c.strokeStyle='#071c38';c.lineWidth=1;c.stroke();c.fill();
   }),g.x,g.y);
  }
  function bullet(ctx,b){const length=Math.max(1,Math.round(Math.hypot(b.vx,b.vy)*.018));let sprite=b._renderSprite;if(!sprite||b.homing&&b._renderLength!==length){sprite=stamp('bullet:'+b.c+':'+b.r+':'+length,48,64,c=>{glow(c,b.c,10);c.lineWidth=b.r*1.4;c.beginPath();c.moveTo(0,0);c.lineTo(0,length);c.stroke();c.fillStyle='#fff';c.fillRect(-1,-3,2,4);});b._renderSprite=sprite;b._renderLength=length;}ctx.save();ctx.translate(b.x,b.y);ctx.rotate(Math.atan2(b.vx,-b.vy));blit(ctx,sprite,0,0);ctx.restore();}
