@@ -25,6 +25,21 @@ window.siteContent = {
   // ゲームは tags に「ゲーム」、platform に mobile / browser / console を指定します。
   games: [
     {
+      "title": "深淵異常調査船",
+      "status": "試作版を公開中",
+      "description": "深海の怪異を観測し、推理した法則で対処する調査ゲーム。「四人目の呼吸」を収録した試作版です。",
+      "platform": "browser",
+      "tags": [
+            "ゲーム",
+            "推理",
+            "ホラー",
+            "PC推奨"
+      ],
+      "theme": "cool",
+      "symbol": "◉",
+      "url": "games/project-loop/"
+},
+    {
       title: "ローグインベーダー",
       status: "ブラウザで公開中",
       description:
@@ -38,6 +53,11 @@ window.siteContent = {
   ],
   console: [],
   news: [
+    {
+      "date": "2026-09-28",
+      "title": "「深淵異常調査船」の試作版を公開",
+      "body": "観測記録を比べて推理し、怪異へ対処するブラウザゲームです。「四人目の呼吸」の調査から帰還まで遊べます。"
+},
     {
       date: "2026-09-21",
       title: "ブラウザゲーム「ローグインベーダー」を公開",
