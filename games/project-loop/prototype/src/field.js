@@ -1,18 +1,39 @@
 // Shared, declarative field interaction engine. Scenario rules contain no UI code.
 export const matches=(values,condition={})=>Object.entries(condition).every(([key,value])=>(Array.isArray(value)?value.includes(values[key]):values[key]===value));
-export const createField=design=>({version:2,values:{...design.initial},records:[],last:null,ended:false,stage:'survey',plan:{goal:'',evidence:[]}});
+export const createField=design=>({version:2,values:{...design.initial},records:[],last:null,ended:false,stage:'survey',plan:{goal:'',evidence:[]},pressure:0,breaches:0});
+// Costs and the next reaction are shared by the UI and simulation.
+export function fieldActionRisk(field,design,id){
+ const action=design.actions.find(a=>a.id===id);
+ if(!action)return {oxygen:0,pressure:field.pressure||0,breach:false};
+ const v=field.values;
+ let oxygen=action.cost?.oxygen||0,delta=0;
+ if(design.pressureSystem){
+  if(id==='signal'&&v.breath==='hold'&&!['gone','container'].includes(v.trace)){oxygen=1;delta=1;}
+  if(id==='call'){oxygen=v.pulse==='long'?2:1;delta=['lock','bunk'].includes(v.trace)?(v.pulse==='long'?2:1):0;}
+  if(id==='recover'){oxygen=2;delta=v.trace==='lock'?1:0;}
+  if(id==='cool'){oxygen=2;delta=-2;}
+  if(id==='leave')oxygen=2;
+ }
+ const projected=['vent','release'].includes(id)?0:Math.max(0,(field.pressure||0)+delta),breach=!!design.pressureSystem&&projected>=4;
+ return {oxygen:oxygen+(breach?1:0),baseOxygen:oxygen,delta,pressure:breach?2:projected,breach,hull:(action.cost?.hull||0)+(breach?4:0)};
+}
 export function performField(field,design,id){
  const action=design.actions.find(a=>a.id===id);
  if(field.ended||!action||!matches(field.values,action.requires))return null;
+ const risk=fieldActionRisk(field,design,id);
  const next=structuredClone(field);
+ next.pressure ??= 0;next.breaches ??= 0;
  if(action.set&&Object.entries(action.set).every(([k,v])=>next.values[k]===v))return null;
  Object.assign(next.values,action.set);
  const rule=action.rules?.find(r=>matches(next.values,r.when))||{};
  Object.assign(next.values,rule.set);
  if(action.intervention)next.stage='aftercare';
- const entry={id:next.records.length+1,action:id,label:action.label,text:rule.text||action.text,conditions:Object.fromEntries(design.conditions.map(c=>[c.label,c.options[next.values[c.key]]??String(next.values[c.key])])),measurement:!!action.measure,intervention:!!action.intervention,stage:next.stage};
+ if(design.pressureSystem){next.pressure=risk.pressure;if(['vent','release'].includes(id))next.pressure=0;if(risk.breach){next.breaches++;if(next.values.trace==='lock')next.values.trace='bunk';if(id==='recover'&&field.values.trace==='lock'){next.values.container='empty';next.values.trace='bunk';}}}
+ const baseText=risk.breach&&id==='recover'&&field.values.trace==='lock'?'回収の途中で、マスクの曇りが消えた。容器を密封したが、その内側は乾いている。':rule.text||action.text;
+ const reaction=risk.breach?' 隔壁が内側から打たれ、配管が破裂した。船体 −4・酸素 −1。圧は2に戻る。船室側で、余分な吸気が立ち上がった。':risk.delta>0?` 反応圧 ${next.pressure}（4で破裂）。${next.pressure===3?'隔壁がきしむ。次の接触で破裂する。':'呼吸が、こちらの拍を追っている。'}`:'';
+ const entry={id:next.records.length+1,action:id,label:action.label,text:baseText+reaction,conditions:Object.fromEntries(design.conditions.map(c=>[c.label,c.options[next.values[c.key]]??String(next.values[c.key])])),measurement:!!action.measure,intervention:!!action.intervention,stage:next.stage};
  next.records.push(entry);next.last=entry;next.ended=!!action.final;
- return {field:next,cost:action.cost||{},ending:action.final?{id:rule.ending||id,name:rule.name||action.label,text:entry.text,reveal:false}:null};
+ return {field:next,cost:design.pressureSystem?{oxygen:risk.oxygen,hull:risk.hull}:action.cost||{},ending:action.final?{id:rule.ending||id,name:rule.name||action.label,text:entry.text,reveal:false}:null};
 }
 const measureRules=[
  {when:{location:'lock',chamber:'vacuum'},text:'隔離区画は真空。空気を伝わる吸気は記録されない。船室の回線は、別に確認する必要がある。'},
@@ -24,10 +45,11 @@ const measureRules=[
  {text:'乗員の吸気と集音器の立ち上がりが重なる。余分な波形は、この十秒間にはない。'}
 ];
 export const FIELD_SCENARIOS={A07:{
+ pressureSystem:true,
  operationConditions:['door','pulse'],
  goals:['反応を別の場所へ移す','船室から分離する','応答を確かめる','標本を確保する'],
- domains:{trace:['none','bunk','lock','container','gone'],casualty:[true,false],chamber:['usable','vacuum'],container:['unused','empty','occupied','released'],contact:['none','heard','named'],pulse:['short','long'],vented:[true,false]},
- initial:{location:'bunk',person:'bunk',breath:'normal',playback:false,door:'open',trace:'none',casualty:false,chamber:'usable',container:'unused',contact:'none',pulse:'short',vented:false},
+ domains:{trace:['none','bunk','lock','container','gone'],casualty:[true,false],chamber:['usable','vacuum'],container:['unused','empty','occupied','released'],contact:['none','heard','named'],pulse:['short','long'],vented:[true,false],reserveUsed:[true,false]},
+ initial:{location:'bunk',person:'bunk',breath:'normal',playback:false,door:'open',trace:'none',casualty:false,chamber:'usable',container:'unused',contact:'none',pulse:'short',vented:false,reserveUsed:false},
  conditions:[
  {key:'location',label:'集音位置',options:{bunk:'寝台',lock:'隔離区画'}},
  {key:'person',label:'協力者',options:{bunk:'寝台',lock:'隔離区画'}},
@@ -75,6 +97,8 @@ export const FIELD_SCENARIOS={A07:{
  {when:{trace:'lock',door:'closed',person:'bunk',contact:'named'},text:'「ふ……」で回線が閉じた。記録済みの名前は残っているが、今回の送信では続きを聞き取れなかった。'},
  {when:{trace:'lock',door:'closed',person:'bunk'},set:{contact:'heard'},text:'「ふ……」で回線が閉じた。切れた後も、区画のメーターが三拍、五拍、八拍と振れた。'},
  {text:'自分の声が配管に響いた。返事に聞こえるものはなかった。'}]},
+ {id:'supply',target:'lock',label:'緊急酸素を供給する（1回）',intervention:true,cost:{oxygen:-2,hull:3},requires:{reserveUsed:false},set:{reserveUsed:true},requirementText:'緊急供給はすでに使用済みです。',warning:'緊急タンクを起動すると船体に負荷がかかります。船体 −3・酸素 +2。一度だけ使えます。',text:'緊急タンクの弁を破断した。船体に負荷がかかったが、酸素2を確保した。'},
+ {id:'cool',target:'lock',label:'冷却弁で反応圧を逃がす',intervention:true,cost:{oxygen:2},requires:{door:'closed',person:'bunk',chamber:'usable',trace:'lock'},requirementText:'無人の隔離区画に反応を残し、隔壁を閉じてください。',text:'レンが冷却弁を開く。予備酸素を使って回線を冷やした。声と標本は失わず、反応圧を2下げた。'},
  {id:'watch-container',target:'container',label:'容器内を観測・保存',measure:true,requires:{container:['empty','occupied','released']},rules:[{when:{container:'occupied'},text:'容器の内側が十秒ごとに曇る。中に人影はない。机の下の集音器には、容器に触れた時だけ小さな振動が残った。'},{when:{container:'released'},text:'固定台だけが机に残っている。海へ放した容器は、もう見えない。'},{text:'マスクは乾いたまま。容器の内側に、呼気の曇りは見えない。'}]},
  {id:'release',requirementText:'異常を密封した容器がある時だけ実行できます。',target:'container',label:'容器を船外へ放す',intervention:true,requires:{container:'occupied'},warning:'回収した標本を失います。放した容器は取り戻せません。',set:{container:'released',trace:'gone'},text:'容器が暗い海へ沈んでいく。最後の曇りが、窓の外で一度だけ白く光った。'},
  {id:'leave',target:'sensor',label:'この現場を離れて浮上',final:true,rules:[
@@ -83,6 +107,7 @@ export const FIELD_SCENARIOS={A07:{
  {when:{container:'occupied'},ending:'specimen',name:'呼吸する標本',text:'密封容器を持ち帰った。内側が十秒ごとに曇る。何を閉じ込めたのか、名前も理由も分からないままだ。'},
  {when:{trace:'gone',contact:'named'},ending:'farewell',name:'点呼に残した名前',text:'船内から余分な呼吸は消えた。帰還報告に冬城ユラという名前を記した。返事をする声は、もう船内にない。'},
  {when:{trace:'gone'},ending:'severed',name:'三人分の帰路',text:'船内の余分な呼吸が消えた状態で海面へ出た。何が応答していたのかを確かめる手段は、海の底に残った。'},
+ {when:{trace:'lock',door:'closed',contact:'named'},ending:'named-contained',name:'返事のある第四室',text:'隔壁を閉じたまま帰還した。記録には冬城ユラという名前と、点呼を求める声を残した。標本を回収する代わりに、三人の帰路を確保した。'},
  {when:{trace:'lock',door:'closed'},ending:'contained',name:'閉じたままの第四室',text:'隔離区画を閉じたまま帰還した。扉の内側では吸気が続いている。この扉を開けるかどうかは、まだ決めていない。'},
  {when:{trace:'bunk'},ending:'leak',name:'船内の吸気',text:'海面の光が差す寝台で、三人のものではない吸気が続いている。ここに残したものとともに帰還した。'},
  {ending:'unresolved',name:'数えなかった呼吸',text:'調査を打ち切った。点呼は三人。最初の録音にあった四つ目の呼吸を説明できないまま、記録を持ち帰った。'}]}

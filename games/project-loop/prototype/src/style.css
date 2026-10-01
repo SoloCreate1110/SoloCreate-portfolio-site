@@ -179,3 +179,23 @@ body[data-screen="result"] .report{margin:1rem 0;padding:.8rem 0}
 .plan-evidence{max-height:280px;overflow:auto;margin:16px 0;display:grid;gap:10px}.plan-evidence label{padding:8px;border:1px solid var(--line);color:var(--text)}.plan-evidence input[type=checkbox]{width:18px;height:18px;accent-color:#64cbf5;margin-right:8px}
 .field-control-item{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0}.field-control-item button{width:100%}.field-requirement{font-size:.72rem;line-height:1.5;color:#bacbd1}.operation-shortcuts{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}.operation-shortcuts span{font-size:.75rem;color:var(--muted)}.operation-shortcuts button{padding:4px 10px;font-size:.78rem}
 .field-workbench.is-operations .field-action-group{grid-column:1/-1}.field-workbench.is-operations .field-action-group>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.field-workbench.is-operations .field-control-item button{flex:initial}
+
+header .help-button{min-width:44px;min-height:44px;border-radius:50%;font-weight:700}
+.game-help{max-width:640px}.game-help .help-steps{padding-left:24px}.game-help .help-steps li{margin:20px 0;padding-left:5px}.game-help h3{font-size:1rem;margin-bottom:6px}.game-help p{line-height:1.8}
+
+/* Decision-first field display; no ticking clock while reading. */
+.field-situation{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(210px,1fr);gap:20px;padding:18px;margin-bottom:16px;border:1px solid #648894;border-radius:8px;background:#10252c}
+.field-situation h2{font-size:1.13rem;margin:6px 0 12px;line-height:1.5}.field-situation p{font-size:.8rem;line-height:1.7;margin:8px 0;color:#c8d8da}
+.pressure-track{display:flex;gap:6px}.pressure-track i{font-style:normal;flex:1;padding:6px;text-align:center;background:#0b171d;border:1px solid #53717b;border-radius:3px;font-size:.8rem}.pressure-track .lit{background:#725932;color:#ffe2a7}.pressure-track .breakpoint{border-color:#ee8d72;color:#ffc9b9}
+.field-situation.is-critical{border-color:#e7a77b;background:#2a2526}.return-budget{border-left:1px solid #648894;padding-left:18px}.return-budget>span{font-size:.75rem;color:#acc8cf}.return-budget strong{display:block;font-size:1.8rem;color:#b5edd6}.return-budget strong small{font-size:.9rem;color:#c8d8da}
+.field-forecast{font-size:.75rem;line-height:1.6;color:#b7dbc9}.field-forecast.hazard{color:#ffc7a5}.field-return-report{border:1px solid var(--line);padding:18px;margin:18px 0;text-align:left}.field-return-report h2{font-size:1.15rem}.field-return-report p{font-size:.85rem;color:var(--muted)}
+body[data-phase="investigation"] .narrative-art{max-height:240px}body[data-phase="investigation"] .narrative-art img{max-height:240px;object-fit:cover}
+@media(max-width:850px){.field-situation{grid-template-columns:1fr}.return-budget{border-left:0;border-top:1px solid #648894;padding:12px 0 0}.field-situation{gap:8px}}
+
+.status .field-situation{grid-template-columns:1fr;border:0;padding:0;margin:16px 0;background:transparent;gap:8px}.status .field-situation h2{font-size:.95rem}.status .field-situation p{font-size:.75rem}.status .field-situation.is-critical h2{color:#ffbd95}.status .return-budget{padding:12px 0 0;border-left:0;border-top:1px solid #648894}.status .return-budget strong{font-size:1.5rem}
+body[data-phase="investigation"] .scene-overlay{top:14px;right:16px;width:calc(100% - 32px);padding:10px 12px;background:#071318cc;border-radius:4px}
+body[data-phase="investigation"] .scene-dialogue p{font-size:.88rem;line-height:1.65;margin:5px 0}body[data-phase="investigation"] .narrative-art img{height:210px;max-height:210px}
+
+.field-controls .field-action-group{grid-column:1/-1}.field-controls .field-action-group>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.field-control-item button{min-height:42px}.field-purpose{font-size:.75rem;line-height:1.55;color:#d6e1e2}.field-controls .field-action-group button{flex:initial}.field-departure{position:sticky;top:80px}
+body[data-phase="investigation"] .narrative-art img{height:170px;max-height:170px}.field-conditions{margin-block:8px;gap:10px}.field-conditions span{font-size:.7rem}.field-target-description{font-size:.87rem}
+@media(max-width:650px){.field-departure{position:static}.field-controls .field-action-group>div{grid-template-columns:1fr}}

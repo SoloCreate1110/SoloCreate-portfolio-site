@@ -1,4 +1,4 @@
-import { FIELD_SCENARIOS, createField, performField } from './field.js';
+import { FIELD_SCENARIOS, createField, performField, fieldActionRisk } from './field.js?v=20261001-contact';
 import { LIMITS, MODES, THRESHOLDS, TOOLS, CREW, MODULES, ANOMALIES, RELICS, DISEASES, COMMANDS, EVENTS, MYSTERIES, SCENARIO_DESIGNS } from './data.js';
 import { hash, random, shuffle } from './rng.js';
 export const active = c => c.hp>0 && c.fatigue<4;
@@ -215,12 +215,17 @@ export function reduce(state,action) {
  }
  case 'FIELD_ACTION': {
   if(!s.field||s.flags.introPending)return state;
-  const result=performField(s.field,FIELD_SCENARIOS[s.node.anomaly],a.id);if(!result)return state;
+  const design=FIELD_SCENARIOS[s.node.anomaly],risk=fieldActionRisk(s.field,design,a.id);
+  if(a.id==='cool'&&!(s.field.pressure>0)||a.id==='supply'&&s.oxygen>8)return state;
+  const beforeOxygen=s.oxygen;
+  const result=performField(s.field,design,a.id);if(!result)return state;
   s.field=result.field;
-  for(const [key,cost] of Object.entries(result.cost))change(s,key,-cost,'現場操作');
+  for(const [key,cost] of Object.entries(result.cost))if(cost)change(s,key,-cost,a.id==='leave'?'浮上':'現場操作');
   if(s.field.values.casualty)s.crew.find(c=>c.id==='aoi').hp=0;
   log(s,s.field.last.text,'investigation');
-  if(result.ending){s.mysteryOutcome=result.ending;s.resolution=result.ending.id;s.completed++;s.score+=s.field.records.filter(r=>r.measurement).length;s.records.push({id:s.node.anomaly,name:anomaly(s).name,law:result.ending.text,correct:false,mode:result.ending.id,ending:result.ending.name});s.phase='aftermath';if(s.field.values.casualty)s.crew.find(c=>c.id==='aoi').hp=0;}
+  if(result.ending&&beforeOxygen<risk.oxygen){s.lossReason='浮上に必要な酸素が不足';finish(s,'loss');break;}
+  if(!result.ending){checkFailure(s);if(s.phase==='result')break;}
+  if(result.ending){s.mysteryOutcome=result.ending;s.resolution=result.ending.id;s.completed++;s.score+=new Set(s.field.records.filter(r=>r.measurement).map(r=>r.text)).size;s.records.push({id:s.node.anomaly,name:anomaly(s).name,law:result.ending.text,correct:false,mode:result.ending.id,ending:result.ending.name});s.phase='aftermath';s.flags.fieldReturn=true;if(s.field.values.casualty)s.crew.find(c=>c.id==='aoi').hp=0;return s;}
   break;
  }
  case 'EVENT':applyEvent(s,a.choice);break;

@@ -1,4 +1,4 @@
-import { FIELD_SCENARIOS } from './field.js';
+import { FIELD_SCENARIOS } from './field.js?v=20261001-contact';
 import { ANOMALIES, RELICS, DISEASES, TOOLS, EVENTS } from './data.js';
 export const KEYS={run:'project-loop.prototype.run.v1',meta:'project-loop.prototype.meta.v1',settings:'project-loop.prototype.settings.v1'};
 export const emptyMeta=()=>({version:1,bestDepth:0,bestScore:0,returns:0,discoveries:{},endings:[],runs:[],tutorial:[]});
@@ -26,6 +26,9 @@ export function validateRun(s) {
  if(s.phase==='encounter'&&(!s.encounter||!s.encounter.progress||!s.encounter.targets||!Array.isArray(s.encounter.stopped)))fail();
  if(s.field){const d=FIELD_SCENARIOS[s.node?.anomaly],f=s.field;if(!d||![1,2].includes(f.version)||!f.values||!Array.isArray(f.records)||typeof f.ended!=='boolean')fail();
   if(f.version===1){f.values={...d.initial,...f.values};f.version=2;f.stage='survey';f.plan={goal:'',evidence:[]};}
+  f.values={...d.initial,...f.values};
+  f.pressure ??= 0;f.breaches ??= 0;
+  if(!Number.isInteger(f.pressure)||f.pressure<0||f.pressure>3||!Number.isInteger(f.breaches)||f.breaches<0)fail();
   if(!['survey','aftercare'].includes(f.stage)||!f.plan||!Array.isArray(f.plan.evidence)||f.plan.evidence.length>2||f.plan.evidence.some(id=>!f.records.some(r=>r.id===id&&r.measurement))||!(f.plan.goal===''||d.goals.includes(f.plan.goal)))fail();
   for(const c of d.conditions)if(!Object.hasOwn(c.options,f.values[c.key]))fail();
   for(const [key,values] of Object.entries(d.domains||{}))if(f.values[key]!==undefined&&!values.includes(f.values[key]))fail();
