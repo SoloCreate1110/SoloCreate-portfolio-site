@@ -26,6 +26,7 @@ export type AppStorage = {
   gachas: GachaData[];
   settings: {
     soundEnabled: boolean;
+    reducedMotion?: boolean;
     vibrationEnabled: boolean;
   };
 };

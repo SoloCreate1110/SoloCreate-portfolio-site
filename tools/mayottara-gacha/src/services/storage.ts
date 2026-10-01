@@ -16,7 +16,7 @@ const isValidStorage = (value: unknown): value is AppStorage => {
     Array.isArray(g.histories) && g.histories.every(h => h && typeof h.id === 'string' && typeof h.resultName === 'string' && typeof h.createdAt === 'string') &&
     (g.mode === undefined || g.mode === 'random' || g.mode === 'cycle') &&
     (g.remaining === undefined || (Array.isArray(g.remaining) && g.remaining.every(id => typeof id === 'string')))
-  ) && Boolean(storage.settings) && typeof storage.settings.soundEnabled === 'boolean' && typeof storage.settings.vibrationEnabled === 'boolean';
+  ) && Boolean(storage.settings) && typeof storage.settings.soundEnabled === 'boolean' && typeof storage.settings.vibrationEnabled === 'boolean' && (storage.settings.reducedMotion === undefined || typeof storage.settings.reducedMotion === 'boolean');
 };
 
 const persist = (storage: AppStorage): void => {
