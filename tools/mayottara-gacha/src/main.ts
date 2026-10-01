@@ -8,15 +8,31 @@ let timer: ReturnType<typeof setTimeout> | undefined;
 let busy = false;
 let hasUnsavedChanges = () => false;
 const button = (label: string, action: string, cls = 'ghost', attrs = '') => `<button class="${cls}" data-action="${action}" ${attrs}>${label}</button>`;
-const header = () => `<header class="app-header"><a class="brand" href="#"><span class="brand-icon" aria-hidden="true">✳</span>まよったらガチャ<span class="brand-dot">.</span></a>${button('設定', 'settings', 'text-button')}</header>`;
+const header = () => `<header class="app-header"><a class="brand" href="#"><span class="brand-icon" aria-hidden="true">✳</span>まよったらガチャ<span class="brand-dot">.</span></a><div class="header-actions">${button('?', 'help', 'help-button', 'type="button" aria-label="使い方を開く" aria-haspopup="dialog" title="使い方"')}${button('設定', 'settings', 'text-button')}</div></header>`;
+const helpDialog = () => `<dialog class="help-dialog" aria-labelledby="help-title">
+  <div class="help-dialog-heading"><h2 id="help-title">まよったらガチャの使い方</h2>${button('×', 'close-help', 'help-close', 'type="button" aria-label="使い方を閉じる" autofocus')}</div>
+  <p class="help-intro">迷ったときは、候補を入れてひと回し。</p>
+  <ol class="help-steps">
+    <li><h3>まずはサンプルで試す</h3><p>マイガチャにある「ガチャを引く」を選び、抽選画面でもう一度「ガチャを引く」を押すと結果が出ます。</p></li>
+    <li><h3>自分のガチャをつくる</h3><p>「＋ ガチャをつくる」から名前と候補を入力します。候補は1行に1つ、2〜100個。「保存して引く」で抽選画面へ進みます。</p></li>
+    <li><h3>抽選方法を選ぶ</h3><p>「毎回ランダム」は毎回すべての候補から同じ確率で抽選。「一巡まで重複なし」は全候補が出るまで同じ候補が出ません。</p></li>
+    <li><h3>編集・履歴・バックアップ</h3><p>候補は「編集」から変更できます。抽選画面には直近100回の履歴を保存。「設定」では効果音・振動の切り替えやバックアップの保存・読み込みができます。</p></li>
+  </ol>
+  <p class="help-storage">ガチャと履歴はこのブラウザに保存されます。ブラウザのデータを消去すると消えるため、大切なガチャは設定からバックアップしてください。</p>
+  ${button('わかった、使ってみる', 'done-help', 'primary', 'type="button"')}
+</dialog>`;
 function mount(content: string) {
   if (timer) clearTimeout(timer);
   busy = false;
   hasUnsavedChanges = () => false;
-  root.innerHTML = `${header()}<div class="page">${content}</div><footer>小さな迷いを、ちょっと楽しく。</footer><p class="toast" role="alert" hidden></p>`;
+  root.innerHTML = `${header()}<div class="page">${content}</div><footer>小さな迷いを、ちょっと楽しく。</footer><p class="toast" role="alert" hidden></p>${helpDialog()}`;
   window.scrollTo(0, 0);
   root.querySelector('h1')?.setAttribute('tabindex', '-1');
   root.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
+  const help = root.querySelector<HTMLDialogElement>('.help-dialog')!;
+  on('help', () => help.showModal());
+  on('close-help', () => help.close());
+  on('done-help', () => help.close());
   on('settings', () => { if (!hasUnsavedChanges() || confirm('保存せずに設定へ移動しますか？')) settings(); });
 }
 function on(action: string, callback: () => void) {

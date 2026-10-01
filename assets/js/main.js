@@ -55,25 +55,28 @@ const renderAppCards = (items, targetId) => {
   const target = document.getElementById(targetId);
   target.innerHTML = items
     .map((item) => {
+      const isBrowser = item.platform === "browser";
+      const browserClass = isBrowser ? " browser-app-card" : "";
       const cardContent = `
         <div class="card-visual ${item.theme || ""}">
+          ${isBrowser && item.catalogArtwork ? `<img class="home-card-artwork" src="${item.catalogArtwork}" alt="" loading="lazy" width="1200" height="800" />` : ""}
           <span class="visual-label">${item.status}</span>
-          ${item.image ? `<img class="app-card-icon" src="${item.image}" alt="" loading="lazy" width="62" height="62" />` : `<span class="next-project-mark" aria-hidden="true">${item.symbol || "＋"}</span>`}
+          ${isBrowser ? '<span class="app-card-icon app-card-icon--transparent" aria-hidden="true"></span>' : item.image ? `<img class="app-card-icon" src="${item.image}" alt="" loading="lazy" width="62" height="62" />` : `<span class="next-project-mark" aria-hidden="true">${item.symbol || "＋"}</span>`}
         </div>
         <div class="card-body">
           <h3>${item.title}</h3>
           <p>${item.description}</p>
           ${createTagList(item.tags)}
-          <span class="card-cta">${item.url ? "紹介を見る" : "準備中"}</span>
+          ${isBrowser ? "" : `<span class="card-cta">${item.url ? (item.actionLabel || "紹介を見る") : "準備中"}</span>`}
         </div>
       `;
 
       if (!item.url) {
-        return `<article class="card app-card is-disabled">${cardContent}</article>`;
+        return `<article class="card app-card${browserClass} is-disabled">${cardContent}</article>`;
       }
 
       return `
-        <a class="card app-card" href="${item.url}" aria-label="${item.title}の紹介ページを見る">
+        <a class="card app-card${browserClass}" href="${item.url}" aria-label="${item.title}：${item.actionLabel || "紹介ページを見る"}">
           ${cardContent}
         </a>
       `;
