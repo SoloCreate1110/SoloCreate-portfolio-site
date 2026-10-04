@@ -36,6 +36,15 @@ window.siteContent = {
   ],
   "games": [
     {
+      "title": "Drop Box",
+      "status": "開発中",
+      "description": "天使の女の子と箱を空高く積み上げる、タップ操作のブラウザゲームです。現在、公開に向けて開発中です。",
+      "platform": "browser",
+      "tags": ["ゲーム", "箱積み", "スマホ対応", "開発中"],
+      "theme": "cool",
+      "catalogArtwork": "assets/images/catalog/drop-box.png"
+    },
+    {
       "title": "深淵異常調査船",
       "status": "試作版を公開中",
       "description": "深海の怪異を観測し、推理した法則で対処する調査ゲーム。「四人目の呼吸」を収録した試作版です。",
