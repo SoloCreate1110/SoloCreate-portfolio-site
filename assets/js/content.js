@@ -78,6 +78,22 @@ window.siteContent = {
       "url": "games/void-bloom/",
       "catalogArtwork": "assets/images/catalog/void-bloom.jpg",
       "catalogIcon": "earth"
+    },
+    {
+      "title": "Mens Toilet Wars",
+      "status": "開発中",
+      "description": "隣に並んだら負け。特殊カードを使い、CPUとのトイレ争奪戦を勝ち抜くターン制ゲームです。現在は開発者によるテスト中です。",
+      "platform": "browser",
+      "tags": [
+        "ゲーム",
+        "ターン制",
+        "カード",
+        "開発中",
+        "PC推奨"
+      ],
+      "theme": "cool",
+      "catalogArtwork": "games/mens-toilet-wars/assets/title-comic.png",
+      "image": "games/mens-toilet-wars/assets/icon00.png"
     }
   ],
   "console": [],
