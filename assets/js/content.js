@@ -40,7 +40,12 @@ window.siteContent = {
       "status": "開発中",
       "description": "天使の女の子と箱を空高く積み上げる、タップ操作のブラウザゲームです。現在、公開に向けて開発中です。",
       "platform": "browser",
-      "tags": ["ゲーム", "箱積み", "スマホ対応", "開発中"],
+      "tags": [
+        "ゲーム",
+        "箱積み",
+        "スマホ対応",
+        "開発中"
+      ],
       "theme": "cool",
       "catalogArtwork": "assets/images/catalog/drop-box.png"
     },
@@ -81,19 +86,21 @@ window.siteContent = {
     },
     {
       "title": "Mens Toilet Wars",
-      "status": "開発中",
-      "description": "隣に並んだら負け。特殊カードを使い、CPUとのトイレ争奪戦を勝ち抜くターン制ゲームです。現在は開発者によるテスト中です。",
+      "status": "公開中",
+      "description": "隣に並んだら負け。特殊カードで駆け引きを楽しむターン制ゲーム。CPU対戦や、ルームを作って友達とのオンライン対戦が遊べます。",
       "platform": "browser",
       "tags": [
         "ゲーム",
         "ターン制",
         "カード",
-        "開発中",
-        "PC推奨"
+        "PC推奨",
+        "オンライン対戦"
       ],
       "theme": "cool",
-      "catalogArtwork": "games/mens-toilet-wars/assets/title-comic.png",
-      "image": "games/mens-toilet-wars/assets/icon00.png"
+      "catalogArtwork": "games/mens-toilet-wars/assets/title-comic.webp",
+      "image": "games/mens-toilet-wars/assets/icon00.webp",
+      "url": "games/mens-toilet-wars/",
+      "actionLabel": "ゲームを開く"
     }
   ],
   "console": [],
