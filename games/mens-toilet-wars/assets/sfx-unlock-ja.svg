@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+<defs><pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="3" fill="#ad242c"/></pattern><linearGradient id="ink" x2="0" y2="1"><stop stop-color="#fffbd3"/><stop offset=".6" stop-color="#ffe55a"/><stop offset="1" stop-color="#ffae24"/></linearGradient></defs>
+<g transform="translate(30 15) rotate(-8 570 285)">
+<path d="M64 280 170 225 102 126 287 164 313 58 432 142 524 32 611 135 788 46 781 151 1039 105 956 217 1143 267 1001 321 1080 438 897 408 906 532 719 437 613 562 520 449 355 533 363 421 146 477 214 367 30 346Z" fill="#091820" stroke="#fff8df" stroke-width="12"/>
+<path d="M107 280 225 236 162 166 316 201 337 112 435 187 526 83 611 181 752 102 740 192 964 151 905 238 1079 274 950 313 1009 398 857 368 862 468 713 397 617 501 532 405 399 475 405 381 219 418 263 344 92 329Z" fill="#ed4a35"/>
+<path d="M107 280 225 236 162 166 316 201 337 112 435 187 526 83 611 181 752 102 740 192 964 151 905 238 1079 274 950 313 1009 398 857 368 862 468 713 397 617 501 532 405 399 475 405 381 219 418 263 344 92 329Z" fill="url(#dots)"/>
+<g font-family="Hiragino Kaku Gothic ProN,Arial Black,sans-serif" font-weight="1000" font-style="italic" font-size="205" text-anchor="middle" stroke-linejoin="round" paint-order="stroke fill">
+<text x="604" y="373" stroke="#091820" stroke-width="32" fill="#091820">ドゥン！</text>
+<text x="588" y="351" stroke="#fff9db" stroke-width="27" fill="#fff9db">ドゥン！</text>
+<text x="588" y="351" stroke="#091820" stroke-width="13" fill="url(#ink)">ドゥン！</text></g>
+<path d="m170 100-50-50m932 10 65-35M70 433 5 462m1010 54 66 30" stroke="#fff4ae" stroke-width="12" stroke-linecap="square"/>
+</g></svg>
