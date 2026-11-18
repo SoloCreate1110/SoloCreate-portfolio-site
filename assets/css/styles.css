@@ -271,8 +271,38 @@ h3 {
   grid-area:intro;
 }
 
-.release-intro .hero-actions {
+.release-stores {
   margin-top:16px;
+}
+
+.release-stores h3 {
+  margin:0 0 8px;
+  font-size:.875rem;
+  color:var(--muted);
+}
+
+.release-store-links {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 12px;
+}
+
+.release-store-links a {
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  min-height:44px;
+  padding:8px 14px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--surface-strong);
+  font-size:.875rem;
+  font-weight:700;
+}
+
+.release-store-links a:hover,
+.release-store-links a:focus-visible {
+  border-color:var(--ink);
 }
 
 .release-showcase > .app-feature {
@@ -283,30 +313,56 @@ h3 {
   margin-bottom:0;
 }
 
-.app-feature-secondary {
+.release-showcase > .app-feature-secondary {
   grid-area:secondary;
-  display:grid;
-  grid-template-columns:auto minmax(0,1fr) auto;
-  align-items:center;
-  gap:14px;
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--surface-strong);
+  min-height:0;
+  padding:20px;
+  background:#352521;
 }
 
-.app-feature-secondary:hover {
-  border-color:var(--ink);
+.app-feature-secondary .featured-app-name {
+  gap:12px;
+  margin:0 0 16px;
 }
 
-.app-feature-secondary img {
+.app-feature-secondary .featured-app-name img {
   border-radius:12px;
 }
 
+.app-feature-secondary h3 {
+  margin:0;
+  font-size:1.125rem;
+}
+
 .app-feature-secondary p {
-  margin:4px 0 0;
-  font-size:.875rem;
-  color:var(--muted);
+  margin:3px 0 0;
+  font-size:.8125rem;
+  color:#f0d9cc;
+}
+
+.app-feature-secondary .featured-app-name .circle-arrow {
+  margin-inline-start:auto;
+  color:#ffb582;
+  font-size:1.25rem;
+}
+
+.app-feature-secondary .featured-app-preview {
+  display:flex;
+  justify-content:center;
+  gap:clamp(12px,3vw,28px);
+  height:clamp(144px,15vw,184px);
+  padding:12px;
+  margin-inline:0;
+  aspect-ratio:auto;
+  background:linear-gradient(135deg,#fae5d2,#edc0a7);
+}
+
+.app-feature-secondary .featured-app-preview img {
+  width:auto;
+  max-width:42%;
+  object-fit:contain;
+  border-radius:8px;
+  box-shadow:0 5px 14px #743b3840;
 }
 
 @media (max-width:1000px) {
