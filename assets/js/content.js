@@ -1,6 +1,23 @@
 window.siteContent = {
   "apps": [
     {
+      "title": "スケジュールーティン",
+      "status": "iPhone・Androidで公開中",
+      "description": "やることを時間のブロックで並べて、毎日のルーティンをタイマーで進めるスケジュール管理アプリです。",
+      "platform": "mobile",
+      "tags": [
+        "ツール",
+        "iPhone",
+        "Android",
+        "予定管理",
+        "タイマー"
+      ],
+      "theme": "warm",
+      "url": "apps/timebox-routine/",
+      "image": "assets/images/timebox-routine/icon.png",
+      "catalogArtwork": "assets/images/timebox-routine/banner.jpg"
+    },
+    {
       "title": "積み上げアプリ",
       "status": "Google Playで公開中",
       "description": "勉強・運動・読書・作業時間などを記録し、毎日の努力を見える化する習慣化サポートアプリです。",
@@ -105,6 +122,11 @@ window.siteContent = {
   ],
   "console": [],
   "news": [
+    {
+      "date": "2026-11-18",
+      "title": "「スケジュールーティン」の紹介ページを追加",
+      "body": "iPhone・Androidで配信中のスケジュール管理アプリを、モバイルアプリ一覧に追加しました。"
+    },
     {
       "date": "2026-09-28",
       "title": "「深淵異常調査船」の試作版を公開",
