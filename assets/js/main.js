@@ -122,8 +122,22 @@ const renderBlog = () => {
 };
 
 const projects = [...content.apps, ...content.games.map(item => ({ platform: "browser", ...item })), ...content.console.map(item => ({ platform: "console", ...item }))];
+const featuredBrowserUrls = [
+  "games/mens-toilet-wars/",
+  "apps/mayottara-gacha/play/",
+  "games/void-bloom/",
+];
+const browserOrder = (item) => {
+  const position = featuredBrowserUrls.indexOf(item.url);
+  if (position !== -1) return position;
+  const inDevelopment = item.status === "開発中" || item.tags.includes("開発中");
+  return featuredBrowserUrls.length + Number(inDevelopment);
+};
+const browserProjects = projects
+  .filter((item) => item.platform === "browser")
+  .sort((a, b) => browserOrder(a) - browserOrder(b));
 renderAppCards(projects.filter((item) => item.platform === "mobile"), "mobile-list");
-renderAppCards(projects.filter((item) => item.platform === "browser"), "browser-list");
+renderAppCards(browserProjects, "browser-list");
 const consoleProjects = projects.filter(item => item.platform === "console");
 if (consoleProjects.length) {
   renderAppCards(consoleProjects, "console-list");
