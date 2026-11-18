@@ -1644,6 +1644,16 @@ html:has(.catalog-page) { scroll-padding-top: var(--catalog-scroll-offset, 240px
 /* Home browser cards reuse catalog artwork; status remains available for upcoming apps. */
 .browser-app-card .card-visual { position: relative; isolation: isolate; }
 .browser-app-card .home-card-artwork { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+.browser-app-card[href="games/mens-toilet-wars/"] .home-card-artwork {
+  object-position: right 24%;
+}
 .browser-app-card .visual-label { background: rgb(255 255 255 / 94%); color: var(--ink); }
+@media (max-width: 480px) {
+  .browser-app-card[href="games/mens-toilet-wars/"] .visual-label {
+    position: absolute;
+    bottom: 10px;
+    left: 24px;
+  }
+}
 .browser-app-card .app-card-icon--transparent { width: 62px; height: 62px; flex-shrink: 0; background: transparent; }
 .browser-app-card .card-body .tag-list { margin-bottom: 0; }
